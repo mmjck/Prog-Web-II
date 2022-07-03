@@ -1,5 +1,8 @@
 import express from "express";
 import router from "./routes/"
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
 const app = express();
 const PORT = 3000;
 
@@ -28,11 +31,28 @@ let demoLogger = (req, res, next) => {
 
 
 
+  const swaggerOptions = {
+    swaggerDefinition: {
+      info: {
+        title: "Shop API",
+        version: '1.0.0',
+      },
+    },
+    apis: ['./src/routes/*.js', './src/controllers/*.js']
+    };
+  
+  const swaggerDocs = swaggerJsDoc(swaggerOptions);
+  
+
 
 
 
 app.use(demoLogger);
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(router);
+
+
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

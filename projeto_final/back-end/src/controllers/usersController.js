@@ -2,13 +2,32 @@ import { v4 as uuidv4 } from 'uuid';
 import { StatusCodes } from 'http-status-codes';
 
 
-const users = [1, 2, 3, 4, 5];
+const users = [];
 
-
+/**
+ * @swagger
+ * /users:
+ *   get:
+*     tags: [Users]
+ *     description: Get all users
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 const index = (req, res) => {
     res.send(users);
 };
 
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     tags: [Users]
+ *     description: Create all users
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 const create = (req, res) => {
     const user = { 
         id: uuidv4(),
@@ -18,6 +37,17 @@ const create = (req, res) => {
     res.send(StatusCodes.CREATED).send(user);
 };
 
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     tags: [Users]
+ *     description: Create all users
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 const read = (req, res) => {
     const { id }  = req.params;
 
@@ -27,11 +57,40 @@ const read = (req, res) => {
     return res.send(user);
 };
 
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     tags: [Users]
+ *     description: Create all users
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 const remove = (req , res ) => {
     const {id } =req.params;
     users = users.filter(u => u.id != id);
 }
 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     tags: [Users]
+ *     description: Delete user by id
+ *     parameters:
+ *      - name: "id"
+ *        in: "path"
+ *        description: "ID of user to return"
+ *        required: true
+ *        type: "integer"
+ *        format: "int64"
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 const update = (req , res ) => {
     const { id } = req.params;
     const findUser = user.find(u=> id === id);
