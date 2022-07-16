@@ -1,11 +1,17 @@
 import express from "express";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+
 import router from "./routes/"
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+import { v4 as uuidv4 } from "uuid"; 
 
+
+require ("dotenv").config({ path: `${__dirname}/../../.env` } )
 const app = express();
-const PORT = 3000;
 
+const PORT = process.env.PORT_BACK || 3333
 
 let demoLogger = (req, res, next) => {
     let current_datetime = new Date();
@@ -44,13 +50,31 @@ let demoLogger = (req, res, next) => {
   const swaggerDocs = swaggerJsDoc(swaggerOptions);
   
 
-
-
-
+app.use(cookieParser())
 app.use(demoLogger);
 
+app.use(session({
+  genid: () => uuidv4(),
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: false
+}));
+
+
+app.use((req,res,next) => {
+  if(!('nome' in req.cookies)) res.cookie('nome','Alinis Morissette');
+  next();
+})
+  
+
+
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+
+
 app.use(router);
+
+
 
 
 

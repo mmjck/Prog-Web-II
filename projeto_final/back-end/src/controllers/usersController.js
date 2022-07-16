@@ -1,21 +1,31 @@
-import { v4 as uuidv4 } from 'uuid';
-import { StatusCodes } from 'http-status-codes';
+import { Usuario, TipoUsuario } from "../models";
+// import { StatusCodes } from "http-status-codes";
+// import { v4 as uuidv4 } from "uuid";
 
 
-const users = [];
 
 /**
  * @swagger
  * /users:
  *   get:
-*     tags: [Users]
+ *     tags: [Users]
  *     description: Get all users
  *     responses:
  *       200:
  *         description: Success
  */
-const index = (req, res) => {
-    res.send(users);
+const index = async (req, res) => {
+  const page = req.query.page ? parseInt(read.query.page) : 1;
+  const size = req.query.size ? parseInt(req.query.size) : 10;
+  try {
+    const usuarios = await Usuario.findAll({
+    //   limit: size,
+    //   offset: (page - 1) * size,
+    });
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 /**
@@ -28,15 +38,23 @@ const index = (req, res) => {
  *       200:
  *         description: Success
  */
-const create = (req, res) => {
-    const user = { 
-        id: uuidv4(),
-        ...req.body()
-    }
-    users.push(user);
-    res.send(StatusCodes.CREATED).send(user);
+const create = async (req, res) => {
+  try {
+    print(red.body);
+    await Usuario.creat(req.body);
+   
+   
+    const user = await Usuario.findOne({
+      where: { email: req.body.email },
+    });
+   
+   
+    res.json(user);
+  } catch (error) {
+    print(error)
+    res.status(500).json(error);
+  }
 };
-
 
 /**
  * @swagger
@@ -48,31 +66,37 @@ const create = (req, res) => {
  *       200:
  *         description: Success
  */
-const read = (req, res) => {
-    const { id }  = req.params;
-
-    const user = users.filter((u) => u.id == id);
-
-    if(!user) return res.send(StatusCodes.NO_CONTENT).send();
-    return res.send(user);
+const read = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const usuario = await Usuario.findByPk(id, {
+      include: TipoUsuario,
+    });
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
-
 
 /**
  * @swagger
  * /users:
- *   post:
+ *   delete:
  *     tags: [Users]
- *     description: Create all users
+ *     description: Delete user by id
  *     responses:
  *       200:
  *         description: Success
  */
-const remove = (req , res ) => {
-    const {id } =req.params;
-    users = users.filter(u => u.id != id);
-}
-
+const remove = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Usuario.destroy({ where: { id } });
+    res.json({ msg: "Usuario removido" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 /**
  * @swagger
@@ -91,16 +115,15 @@ const remove = (req , res ) => {
  *       200:
  *         description: Success
  */
-const update = (req , res ) => {
-    const { id } = req.params;
-    const findUser = user.find(u=> id === id);
-    if(!findUser)return res.status(StatusCodes.NO_CONTENT).send();
-    const user= {
-        id: id,
-        ...req.body
-    }
-    users = users.map(u => (u.id === id) ? user : u)
-    res.send(user);
-}
+const update = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Usuario.update(req.body, { where: { id } });
+    const usuario = await Usuario.findByPk(id);
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 export default { index, create, read, remove, update };
