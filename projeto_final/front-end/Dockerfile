@@ -4,4 +4,4 @@ WORKDIR /usr/app
 
 EXPOSE 3366
 
-CMD ["npm" , "start"]
+CMD ["npm", "start"]

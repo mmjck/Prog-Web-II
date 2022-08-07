@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Usuarios', {
+    await queryInterface.createTable("Usuarios", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       tipoUsuarioId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       nome: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       email: {
         type: Sequelize.STRING,
@@ -23,19 +23,20 @@ module.exports = {
       },
       senha: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
+  // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Usuarios');
-  }
+    await queryInterface.dropTable("Usuarios");
+  },
 };

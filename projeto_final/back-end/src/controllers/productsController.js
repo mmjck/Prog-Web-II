@@ -40,7 +40,7 @@ const update = async (req, res) => {
   try {
     await Produto.update(req.body, { where: { id } });
     const produtos = await Produto.findByPk(id);
-    res.json(usuario);
+    res.json(produtos);
   } catch (error) {
     res.status(500).json(error);
   }

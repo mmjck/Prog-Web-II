@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Produto extends Model {
     /**
@@ -9,32 +7,36 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    // eslint-disable-next-line no-unused-vars
     static associate(models) {
       // define association here
     }
   }
-  Produto.init({
-    nome: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: {
-          args: [3,50],
-          msg:"O nome do produto precisa conter entre 3 e 50 caracteres",
-        }
-      }
+  Produto.init(
+    {
+      nome: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: {
+            args: [3, 50],
+            msg: "O nome do produto precisa conter entre 3 e 50 caracteres",
+          },
+        },
+      },
+      preco: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      estoque: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    preco: { 
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-    estoque: { 
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    {
+      sequelize,
+      modelName: "Produto",
     }
-  }, {
-    sequelize,
-    modelName: 'Produto',
-  });
+  );
   return Produto;
 };

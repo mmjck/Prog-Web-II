@@ -1,9 +1,7 @@
 import express from "express";
 import usersController from "../controllers/usersController";
 
-
 const router = express.Router();
-
 
 router.get("/", usersController.index);
 
@@ -12,4 +10,4 @@ router.post("/", usersController.create);
 router.delete("/", usersController.remove);
 router.put("/", usersController.update);
 
-export default router
+export default router;

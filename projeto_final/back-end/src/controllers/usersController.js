@@ -1,8 +1,7 @@
 import { Usuario, TipoUsuario } from "../models";
 // import { StatusCodes } from "http-status-codes";
 // import { v4 as uuidv4 } from "uuid";
-
-
+import { genSalt, hash } from "bcryptjs";
 
 /**
  * @swagger
@@ -19,8 +18,8 @@ const index = async (req, res) => {
   const size = req.query.size ? parseInt(req.query.size) : 10;
   try {
     const usuarios = await Usuario.findAll({
-    //   limit: size,
-    //   offset: (page - 1) * size,
+      limit: size,
+      offset: (page - 1) * size,
     });
     res.json(usuarios);
   } catch (error) {
@@ -40,18 +39,21 @@ const index = async (req, res) => {
  */
 const create = async (req, res) => {
   try {
-    print(red.body);
-    await Usuario.creat(req.body);
-   
-   
+    console.log(req.body);
+
+    const { senha, nome, tipoUsuarioId, email } = req.body;
+    const salt = await genSalt(parseInt(process.env.BCRYPTJS_ROUNDS));
+    const password = await hash(senha, salt);
+
+    await Usuario.create({ nome, tipoUsuarioId, email, senha: password });
+
     const user = await Usuario.findOne({
-      where: { email: req.body.email },
+      where: { email: email },
     });
-   
-   
+
     res.json(user);
   } catch (error) {
-    print(error)
+    console.log(error);
     res.status(500).json(error);
   }
 };

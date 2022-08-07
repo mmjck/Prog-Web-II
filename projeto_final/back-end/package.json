@@ -27,6 +27,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.18"
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
+    "sucrase": "^3.24.0"
   }
 }

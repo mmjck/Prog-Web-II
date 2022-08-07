@@ -11,7 +11,7 @@ services:
       - ./.env
   frontend:
     build:
-      context: ./front-end 
+      context: ./front-end
     ports:
       - ${PORT}:${PORT}
     volumes:
