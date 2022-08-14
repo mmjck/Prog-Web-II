@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
-
 import Api from "../../services/api";
 import CardProduto from "../../components/Produto";
 

@@ -47,57 +47,57 @@ const CriarProdutoForm = () => {
     }
 
     return (
-        <div>
+        <div >
             <h3>Adição de produto</h3>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="nome">Nome</label>
+                <label className="form-label" htmlFor="nome">Nome</label>
                 <input
                     type="text"
                     required
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                     id="nome"
-                    className="form-control" />
+                    className="form-control form-control-lg" />
 
                 {hasError && (
                     <div class="invalid-feedback" style={{ display: "block" }}>
                         {errorNome}
                     </div>
                 )}
-                <label htmlFor="descricao">Descrição</label>
+                <label className="form-label" htmlFor="descricao">Descrição</label>
                 <textarea
                     required
                     value={descricao}
                     onChange={(e) => setDescricao(e.target.value)}
                     id="descricao"
-                    className="form-control" />
+                    className="form-control form-control-lg" />
 
                 {hasError && (
                     <div class="invalid-feedback" style={{ display: "block" }}>
                         {errorNome}
                     </div>
                 )}
-                <label htmlFor="preco">Preço</label>
+                <label className="form-label" htmlFor="preco">Preço</label>
                 <input
                     required
                     type="number"
                     value={preco}
                     onChange={(e) => setPreco(e.target.value)}
                     id="preco"
-                    className="form-control" />
+                    className="form-control form-control-lg" />
 
                 {hasError && (
                     <div class="invalid-feedback" style={{ display: "block" }}>
                         {errorNome}
                     </div>
                 )}
-                <label htmlFor="estoque">Estoque</label>
+                <label className="form-label" htmlFor="estoque">Estoque</label>
                 <select
                     required
                     value={estoque}
                     onChange={(e) => setEstoque(e.target.value)}
                     id="estoque"
-                    className="form-control">
+                    className="form-control form-control-lg">
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="30">30</option>
@@ -107,8 +107,7 @@ const CriarProdutoForm = () => {
 
 
                 {!loading ? (
-                    <button className="btn btn-primary mt-3" type="submit">Cadastrar</button>) : (<div class="spinner-border" role="status">
-                    </div>)}
+                    <button className="btn btn-primary mt-3" type="submit">Cadastrar</button>) : (<div class="spinner-border" role="status" />)}
 
             </form>
 

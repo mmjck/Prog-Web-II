@@ -2,6 +2,17 @@ import client from "./clientService"
 
 
 const Api = {
+
+    async login(data){
+        const response = await client.post("/login", data)
+        return response.data;
+    },
+
+    async signup(data){
+
+    },
+
+
     async getProducts(){
         const response = await client.get("/products")
         return response.data;

@@ -1,5 +1,5 @@
-import { compare } from "bcryptjs";
-import { Usuario } from "../models";
+import { compare } from 'bcryptjs';
+import { Usuario } from '../models';
 
 const login = async (req, res) => {
   try {
@@ -12,8 +12,15 @@ const login = async (req, res) => {
       const ok = await compare(req.body.senha, usuario.senha);
       if (ok) {
         req.session.uid = usuario.id;
-        res.send({ msg: "Usuario autenticado" });
-      } else res.send({ msg: "Email e/ou senha incorreta" });
+        res.send({
+          usuario: {
+            nome: usuario.nome,
+            email: usuario.email,
+            tipoUsuarioId: usuario.tipoUsuarioId,
+          },
+          msg: 'Usuario autenticado',
+        });
+      } else res.send({ msg: 'Email e/ou senha incorreta' });
     }
   } catch (error) {
     res.status(500).json(error);
@@ -21,7 +28,7 @@ const login = async (req, res) => {
 };
 const logout = async (req, res) => {
   req.session.destroy((err) => {
-    if (!err) res.send({ msg: "Usuario delogado com sucesso" });
+    if (!err) res.send({ msg: 'Usuario delogado com sucesso' });
   });
 };
 

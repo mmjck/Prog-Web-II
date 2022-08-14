@@ -1,23 +1,23 @@
-"use strict";
+'use strict';
 
 module.exports = {
   // eslint-disable-next-line no-unused-vars
   async up(queryInterface, Sequelize) {
-    await queryInterface.addConstraint("Usuarios", {
-      fields: ["tipoUsuarioId"],
-      type: "foreign key",
-      name: "tipoUsuarioFk",
+    await queryInterface.addConstraint('Usuarios', {
+      fields: ['tipoUsuarioId'],
+      type: 'foreign key',
+      name: 'tipoUsuarioFk',
       references: {
-        table: "TipoUsuarios",
-        field: "id",
+        table: 'TipoUsuarios',
+        field: 'id',
       },
-      onDelete: "restrict",
-      onUpdate: "restrict",
+      onDelete: 'restrict',
+      onUpdate: 'restrict',
     });
   },
 
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint("Usuarios", "tipoUsuarioFk");
+    await queryInterface.removeConstraint('Usuarios', 'tipoUsuarioFk');
   },
 };

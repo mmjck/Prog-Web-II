@@ -1,10 +1,23 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { Produtos, Sobre, Produto, CriarProdutoForm, EditarProduto } from "./screens"
+import { Produtos, Sobre, Produto, CriarProdutoForm, EditarProduto, Login } from "./screens"
 
 import Header from "./components/Header";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const App = () => {
+
+  const user = useSelector((state) => state.userData);
+
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
+
+
+  console.log(`asasd`);
+
   return (
     <BrowserRouter>
       <Header />
@@ -18,7 +31,7 @@ const App = () => {
           <Route path='/sobre' element={< Sobre />}></Route>
           <Route path='/cart' element={< Sobre />}></Route>
 
-          <Route path='/login' element={< Sobre />}></Route>
+          <Route path='/login' element={< Login />}></Route>
           <Route path='/signup).' element={< Sobre />}></Route>
 
         </Routes>
