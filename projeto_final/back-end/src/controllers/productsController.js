@@ -1,4 +1,4 @@
-import { Produto } from "../models";
+import { Produto } from '../models';
 
 const index = async (req, res) => {
   const page = req.query.page ? parseInt(req.query.page) : 1;
@@ -17,9 +17,8 @@ const index = async (req, res) => {
 const create = async (req, res) => {
   try {
     console.log(req.body);
-    await Produto.create(req.body);
-    const produtos = await Produto.findOne({ where: { id: req.body.nome } });
-    res.json(produtos);
+    const produto = await Produto.create(req.body);
+    res.send(produto);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -39,8 +38,8 @@ const update = async (req, res) => {
   const { id } = req.params;
   try {
     await Produto.update(req.body, { where: { id } });
-    const produtos = await Produto.findByPk(id);
-    res.json(produtos);
+    const produto = await Produto.findByPk(id);
+    res.json(produto);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -50,7 +49,7 @@ const remove = async (req, res) => {
   const { id } = req.params;
   try {
     await Produto.destroy({ where: { id } });
-    res.json({ msg: "Produto removido" });
+    res.json({ msg: 'Produto removido' });
   } catch (error) {
     res.status(500).json(error);
   }

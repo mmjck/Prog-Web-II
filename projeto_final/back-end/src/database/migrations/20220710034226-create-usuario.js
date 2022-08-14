@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Usuarios", {
+    await queryInterface.createTable('Usuarios', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -37,6 +37,6 @@ module.exports = {
   },
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Usuarios");
+    await queryInterface.dropTable('Usuarios');
   },
 };

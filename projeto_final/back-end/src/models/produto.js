@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Produto extends Model {
     /**
@@ -20,12 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [3, 50],
-            msg: "O nome do produto precisa conter entre 3 e 50 caracteres",
+            msg: 'O nome do produto precisa conter entre 3 e 50 caracteres',
           },
         },
       },
       preco: {
         type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      descricao: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       estoque: {
@@ -35,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Produto",
+      modelName: 'Produto',
     }
   );
   return Produto;

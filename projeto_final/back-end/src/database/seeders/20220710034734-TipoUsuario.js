@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
 module.exports = {
   // eslint-disable-next-line no-unused-vars
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "TipoUsuarios",
+      'TipoUsuarios',
       [
         {
           id: 1,
-          rotulo: "cliente",
+          rotulo: 'cliente',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           id: 2,
-          rotulo: "colaborador",
+          rotulo: 'colaborador',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -25,6 +25,6 @@ module.exports = {
 
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("TipoUsuarios", null, {});
+    await queryInterface.bulkDelete('TipoUsuarios', null, {});
   },
 };
