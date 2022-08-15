@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -6,40 +7,40 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       usuarioID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       logradouro: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       numero: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       bairro: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       cidade: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       uf: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       cep: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Enderecos');
-  }
+  },
 };
