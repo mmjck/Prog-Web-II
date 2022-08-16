@@ -1,7 +1,7 @@
-import { Usuario, TipoUsuario } from "../models";
+import { Usuario, TipoUsuario, Endereco } from '../models';
 // import { StatusCodes } from "http-status-codes";
 // import { v4 as uuidv4 } from "uuid";
-import { genSalt, hash } from "bcryptjs";
+import { genSalt, hash } from 'bcryptjs';
 
 /**
  * @swagger
@@ -49,6 +49,7 @@ const create = async (req, res) => {
 
     const user = await Usuario.findOne({
       where: { email: email },
+      attributes: { exclude: ['senha'] },
     });
 
     res.json(user);
@@ -72,7 +73,7 @@ const read = async (req, res) => {
   const { id } = req.params;
   try {
     const usuario = await Usuario.findByPk(id, {
-      include: TipoUsuario,
+      include: [TipoUsuario, Endereco],
     });
     res.json(usuario);
   } catch (error) {
@@ -94,7 +95,7 @@ const remove = async (req, res) => {
   const { id } = req.params;
   try {
     await Usuario.destroy({ where: { id } });
-    res.json({ msg: "Usuario removido" });
+    res.json({ msg: 'Usuario removido' });
   } catch (error) {
     res.status(500).json(error);
   }

@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Endereco extends Model {
     /**
@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
       // define association here
+      this.belongsTo(models.Usuario);
     }
   }
   Endereco.init(
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Endereco",
+      modelName: 'Endereco',
     }
   );
   return Endereco;
