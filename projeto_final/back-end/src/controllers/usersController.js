@@ -1,8 +1,8 @@
 import { Usuario, TipoUsuario, Endereco } from '../models';
 // import { StatusCodes } from "http-status-codes";
 // import { v4 as uuidv4 } from "uuid";
+import { Op } from 'sequelize';
 import { genSalt, hash } from 'bcryptjs';
-
 /**
  * @swagger
  * /users:
@@ -73,10 +73,25 @@ const read = async (req, res) => {
   const { id } = req.params;
   try {
     const usuario = await Usuario.findByPk(id, {
-      include: [TipoUsuario, Endereco],
+      include: [
+        // {
+        //   association: 'Endereco',
+        // },
+        {
+          model: TipoUsuario,
+          // whe
+        },
+        {
+          model: Endereco,
+          where: {
+            usuarioID: id,
+          },
+        },
+      ],
     });
     res.json(usuario);
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };
@@ -128,5 +143,26 @@ const update = async (req, res) => {
     res.status(500).json(error);
   }
 };
+const listAllCollaborators = async (req, res) => {
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const size = req.query.size ? parseInt(req.query.size) : 10;
+  const chefe = req.params.id;
+  try {
+    const produtos = await Usuario.findAll({
+      limit: size,
+      offset: (page - 1) * size,
+      where: {
+        tipoUsuarioId: 2,
+        id: {
+          [Op.ne]: chefe,
+        },
+      },
+      attributes: { exclude: ['senha'] },
+    });
+    res.json(produtos);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
-export default { index, create, read, remove, update };
+export default { index, create, read, remove, update, listAllCollaborators };

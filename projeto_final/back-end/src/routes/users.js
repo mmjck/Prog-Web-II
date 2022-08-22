@@ -10,6 +10,7 @@ router.get('/:id', usersController.read);
 router.post('/', usersController.create);
 router.delete('/', usersController.remove);
 router.put('/', usersController.update);
+router.get('/:id/collaborators', usersController.listAllCollaborators);
 
 router.get('/:id/address', addressController.create);
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -6,31 +7,32 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       compraId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       produtoId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       quantidade: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('CompraItems');
-  }
-};'use strict';
+  },
+};
+('use strict');
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('CompraItems', {
@@ -38,28 +40,28 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       compraId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       produtoId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       quantidade: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('CompraItems');
-  }
+  },
 };

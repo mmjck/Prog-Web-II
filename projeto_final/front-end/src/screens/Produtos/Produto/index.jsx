@@ -5,9 +5,28 @@ import Api from "../../../services/api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
+import {
+    LinearProgress,
+    Typography, Box, Button,
+    Divider,
+    List, ListItem,
+    ListItemText,
+    Paper, ListItemAvatar,
+    Avatar,
+    IconButton,
+    ButtonGroup
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ImageIcon from '@mui/icons-material/AccountCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+import { Container } from "@mui/system";
+
 
 const Produto = () => {
     const navigate = useNavigate();
+    const theme = createTheme();
 
     const [produto, setProduto] = useState({});
     const { id } = useParams();
@@ -40,29 +59,38 @@ const Produto = () => {
         }
     }
     return (
-        <div>
-            <div >
-                <h3 className="float-start">{produto.nome}</h3>
-                <div className="float-end">
-                    <button
-                        onClick={handleEdit}
-                        className="btn btn-primary mx-3"
+        <ThemeProvider
+            theme={theme}>
+            <Container>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    p: 1,
+                    m: 1,
+                    bgcolor: 'background.paper',
+                    borderRadius: 1,
+                }}>
+                    <Typography variant="h3" >{produto.nome}</Typography>
+                    <ButtonGroup
+                        variant="text"
+                        disableElevation
+                        aria-label="Disabled elevation buttons"
                     >
+                        <Button onClick={handleEdit}
+                        >
+                            <EditIcon />
 
-                        <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                    </button>
+                        </Button >
+                        <Button onClick={handleDelete}
+                        >
+                            <DeleteIcon color="red" />
+                        </Button>
+                    </ButtonGroup>
 
-                    <button
-                        onClick={handleDelete}
-                        className="btn btn-danger mx-3"
-                    >
-                        <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                    </button>
-                </div>
-            </div>
-
-            <p>{produto.descricao}</p>
-        </div>
+                </Box>
+                <p>{produto.descricao}</p>
+            </Container>
+        </ThemeProvider >
     )
 }
 

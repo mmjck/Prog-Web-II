@@ -2,26 +2,42 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Api from "../../../services/api";
 
+import {
+    Typography, Box, Button, TextField,
+    LinearProgress, Paper
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import Contador from "../../../components/Contador";
 
+
+const validationSchema = yup.object({
+    nome: yup
+        .string('Insira seu nome')
+        .required('Nome is required'),
+    descricao: yup
+        .string('Insira seu email')
+        .required('Email is required'),
+    preco: yup
+        .number()
+        .required('Preço is required'),
+});
 
 const CriarProdutoForm = () => {
 
-    const [nome, setNome] = useState('')
-    const [descricao, setDescricao] = useState('')
-    const [preco, setPreco] = useState(0)
-    const [estoque, setEstoque] = useState(10)
+    const [estoque, setEstoque] = useState(1)
     const [loading, setLoadinng] = useState(false)
 
 
-    const [errorNome, setErrorNome] = useState("")
-    const [hasError, setHasError] = useState(false)
 
     const navigate = useNavigate();
+    const theme = createTheme();
+
     const handleSubmit = async (e) => {
-        const produto = { nome, descricao, preco, estoque }
-        e.preventDefault()
+        console.log(e);
+        const produto = { ...e, estoque }
         setLoadinng(true)
-        setHasError(false)
 
         try {
             const response = await Api.createProdut(produto);
@@ -30,90 +46,99 @@ const CriarProdutoForm = () => {
             console.log(response);
         } catch (error) {
             console.log(error);
-            setHasError(true)
-            if (error.response.data.errors) {
-                error.response.data.errors.forEach(element => {
-                    if (element.path === "nome") {
-                        setErrorNome(element.message)
-                    }
-                    console.log(element);
-                });
-            }
-            console.log(error.response.data.errors);
+
         }
         finally {
             setLoadinng(false)
         }
     }
 
+    const formik = useFormik({
+        initialValues: {
+            nome: "",
+            descricao: '',
+            preco: 0,
+
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values, event) => {
+            console.log(event);
+            // e.preventDefault()
+            handleSubmit(values)
+
+        },
+    });
+
     return (
-        <div >
-            <h3>Adição de produto</h3>
-            <form onSubmit={handleSubmit}>
-                <label className="form-label" htmlFor="nome">Nome</label>
-                <input
-                    type="text"
-                    required
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+        <ThemeProvider
+            theme={theme}>
+            {loading && (
+                <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                </Box>
+            )}
+            <Typography component="h3">
+                Adição de produto
+            </Typography>
+            <Box component="form" onSubmit={formik.handleSubmit}>
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    value={formik.values.nome}
+                    onChange={formik.handleChange}
+                    error={formik.touched.nome && Boolean(formik.errors.nome)}
+                    helperText={formik.touched.nome && formik.errors.nome}
                     id="nome"
-                    className="form-control form-control-lg" />
-
-                {hasError && (
-                    <div class="invalid-feedback" style={{ display: "block" }}>
-                        {errorNome}
-                    </div>
-                )}
-                <label className="form-label" htmlFor="descricao">Descrição</label>
-                <textarea
-                    required
-                    value={descricao}
-                    onChange={(e) => setDescricao(e.target.value)}
+                    label="Nome"
+                    name="nome"
+                />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    value={formik.values.descricao}
+                    onChange={formik.handleChange}
+                    error={formik.touched.descricao && Boolean(formik.errors.descricao)}
+                    helperText={formik.touched.descricao && formik.errors.descricao}
                     id="descricao"
-                    className="form-control form-control-lg" />
-
-                {hasError && (
-                    <div class="invalid-feedback" style={{ display: "block" }}>
-                        {errorNome}
-                    </div>
-                )}
-                <label className="form-label" htmlFor="preco">Preço</label>
-                <input
-                    required
-                    type="number"
-                    value={preco}
-                    onChange={(e) => setPreco(e.target.value)}
+                    label="Descrição"
+                    name="descricao"
+                />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    value={formik.values.preco}
+                    onChange={formik.handleChange}
+                    error={formik.touched.preco && Boolean(formik.errors.preco)}
+                    helperText={formik.touched.preco && formik.errors.preco}
                     id="preco"
-                    className="form-control form-control-lg" />
-
-                {hasError && (
-                    <div class="invalid-feedback" style={{ display: "block" }}>
-                        {errorNome}
-                    </div>
-                )}
-                <label className="form-label" htmlFor="estoque">Estoque</label>
-                <select
-                    required
-                    value={estoque}
-                    onChange={(e) => setEstoque(e.target.value)}
-                    id="estoque"
-                    className="form-control form-control-lg">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                </select>
+                    label="Preço"
+                    name="preco"
+                    type="number"
+                />
 
 
 
+                <Contador value={estoque} increment={() => {
+                    setEstoque(estoque + 1)
+                }}
+                    decrement={() => {
+                        setEstoque(estoque - 1)
+                    }} />
 
-                {!loading ? (
-                    <button className="btn btn-primary mt-3" type="submit">Cadastrar</button>) : (<div class="spinner-border" role="status" />)}
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                >
+                    Cadastrar
+                </Button>
 
-            </form>
+            </Box>
 
 
-        </div >
-
+        </ThemeProvider >
 
 
     )

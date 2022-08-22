@@ -2,8 +2,27 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button, IconButton
+} from "@mui/material";
 
+import ImageIcon from '@mui/icons-material/AccountCircle';
 
+const styles = {
+    toolbar: {
+        display: "flex",
+        justifyContent: "space-between",
+    },
+    menuButton: {
+        fontFamily: "Open Sans, sans-serif",
+        fontWeight: 700,
+        size: "18px",
+        marginLeft: "38px",
+    },
+};
 
 
 
@@ -19,30 +38,66 @@ const Header = () => {
 
         }
     }, [user])
-    return (
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-            <div className="container-fluid">
-                <Link className="navbar-brand" to="/" >Minha loja</Link>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
 
 
+    const buttonHeader = (label, href) => {
+        return (
+            <Button
+                style={styles.menuButton}
+                {...{
+                    key: label,
+                    color: "inherit",
+                    to: href,
+                    component: Link,
+                }}
+            >
+                {label}
+            </Button>
+        )
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav mr-auto">
-                        <Link className="nav-link" to="/sobre">Sobre </Link>
-                        <Link className="nav-link" to="/sobre">Meu carrinho </Link>
+    }
 
-                        {!logged && <Link className="nav-link" to="/login">Login </Link>}
-                        {!logged && <Link className="nav-link" to="/signup">Cadastro </Link>}
-                        {logged && <Link className="nav-link" to="/sobre">Sair </Link>}
-                    </ul>
+    const getMenuButtons = () => {
+        return (
+            <div>
+                {buttonHeader("Sobre", "/sobre")}
+                {buttonHeader("Carrinho", "/sobre")}
+                {!logged && buttonHeader("Login", "/login")}
+                {!logged && buttonHeader("Cadastro", "/signup")}
+                {buttonHeader("Sair", "/logout")}
 
-                </div>
+                <IconButton aria-label="delete" size="large"
+                    {...{
+                        color: "inherit",
+                        to: "/perfil",
+                        component: Link,
+                    }}>
+                    <ImageIcon fontSize="inherit" />
+                </IconButton>
+
             </div>
-        </nav>
-    );
+        )
+    }
+
+    const { header } = styles;
+
+    return (
+        <AppBar style={header} position="relative">
+            <Toolbar style={styles.toolbar}>
+                <Typography
+                    component="a"
+                    href="/"
+                    sx={{
+                        color: 'inherit',
+                        textDecoration: 'none',
+                    }}>
+                    Minha loja
+                </Typography>
+                <div>{getMenuButtons()}</div>
+
+            </Toolbar>
+        </AppBar>);
+
 }
 
 

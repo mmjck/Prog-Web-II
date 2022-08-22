@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
     /**
@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.TipoUsuario);
+
+      //address
+      this.hasMany(models.Endereco);
     }
   }
   Usuario.init(
@@ -21,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [3, 50],
-            msg: "O nome do usuario precisa conter entre 3 a 50 caracteress",
+            msg: 'O nome do usuario precisa conter entre 3 a 50 caracteress',
           },
         },
       },
@@ -31,18 +34,24 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: {
             args: true,
-            msg: "Por favor, digite um email válido.",
+            msg: 'Por favor, digite um email válido.',
           },
         },
       },
       senha: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          len: {
+            args: [8, 20],
+            msg: 'Senha fora do padrão',
+          },
+        },
       },
     },
     {
       sequelize,
-      modelName: "Usuario",
+      modelName: 'Usuario',
     }
   );
   return Usuario;

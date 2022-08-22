@@ -1,10 +1,22 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-
-import { Produtos, Sobre, Produto, CriarProdutoForm, EditarProduto, Login } from "./screens"
-
-import Header from "./components/Header";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+
+
+import Header from "./components/Header";
+
+import {
+  Produtos,
+  Sobre,
+  Produto,
+  CriarProdutoForm,
+  EditarProduto,
+  Login,
+  Signup,
+  Colaboradores,
+  CriarColaborador,
+  Perfil
+} from "./screens"
 
 const App = () => {
 
@@ -28,11 +40,21 @@ const App = () => {
           <Route path="/produto/:id" element={<Produto />} />
           <Route path="/produto/:id/edit" element={<EditarProduto />} />
 
+
+          <Route path='/colaboradores' element={< Colaboradores />}></Route>
+          <Route path='/colaboradores/adicionar' element={< CriarColaborador />}></Route>
+
+
           <Route path='/sobre' element={< Sobre />}></Route>
           <Route path='/cart' element={< Sobre />}></Route>
 
           <Route path='/login' element={< Login />}></Route>
-          <Route path='/signup).' element={< Sobre />}></Route>
+          <Route path='/signup' element={< Signup />}></Route>
+
+
+
+
+          <Route path='/perfil' element={< Perfil />}></Route>
 
         </Routes>
       </div>

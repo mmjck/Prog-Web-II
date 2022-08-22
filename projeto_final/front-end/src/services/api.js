@@ -8,10 +8,29 @@ const Api = {
         return response.data;
     },
 
+    //usado para criar colaboratores e fazer cadastro
     async signup(data){
-
+        const response = await client.post("/users", data)
+        return response.data;
     },
 
+
+    async getUser (id){
+        const response = await client.get(`/users/${id}/`)
+        return response.data;
+    },
+
+    async deleteUser(id){
+        const response = await client.delete(`/users/${id}/`)
+        return response.data;
+    },
+  
+  
+
+    async getCollaboratos (id){
+        const response = await client.get(`/users/${id}/collaborators`)
+        return response.data;
+    },
 
     async getProducts(){
         const response = await client.get("/products")
