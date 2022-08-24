@@ -20,6 +20,7 @@ const index = async (req, res) => {
     const usuarios = await Usuario.findAll({
       limit: size,
       offset: (page - 1) * size,
+      attributes: { exclude: ['senha'] },
     });
     res.json(usuarios);
   } catch (error) {

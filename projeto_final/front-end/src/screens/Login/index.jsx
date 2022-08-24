@@ -78,7 +78,7 @@ const Login = () => {
                     <Typography component="h1" variant="h5">
                         Entrar
                     </Typography>
-                    <Box component="form" onSubmit={formik.onSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={formik.onSubmit} sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required

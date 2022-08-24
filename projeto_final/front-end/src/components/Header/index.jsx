@@ -64,17 +64,18 @@ const Header = () => {
                 {buttonHeader("Carrinho", "/sobre")}
                 {!logged && buttonHeader("Login", "/login")}
                 {!logged && buttonHeader("Cadastro", "/signup")}
-                {buttonHeader("Sair", "/logout")}
+                {logged && buttonHeader("Sair", "/logout")}
 
-                <IconButton aria-label="delete" size="large"
-                    {...{
-                        color: "inherit",
-                        to: "/perfil",
-                        component: Link,
-                    }}>
-                    <ImageIcon fontSize="inherit" />
-                </IconButton>
-
+                {logged && (
+                    <IconButton aria-label="delete" size="large"
+                        {...{
+                            color: "inherit",
+                            to: "/perfil",
+                            component: Link,
+                        }}>
+                        <ImageIcon fontSize="inherit" />
+                    </IconButton>
+                )}
             </div>
         )
     }

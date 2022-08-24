@@ -11,13 +11,13 @@ import Slide from '@mui/material/Slide';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-const CustomDialog = ({ isOpen, confirm, close, title, message }) => {
+const DialogDelete = ({ isOpen, onConfirm, onClose, title, message }) => {
     return (
         <Dialog
             open={isOpen}
             TransitionComponent={Transition}
             keepMounted
-            onClose={close}
+            onClose={onClose}
             aria-describedby="alert-dialog-slide-description"
         >
             <DialogTitle>{title}</DialogTitle>
@@ -27,12 +27,12 @@ const CustomDialog = ({ isOpen, confirm, close, title, message }) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button color='error' variant="contained" onClick={close}>Não</Button>
-                <Button onClick={confirm}>Sim</Button>
+                <Button color='error' variant="contained" onClick={onClose}>Não</Button>
+                <Button onClick={onConfirm}>Sim</Button>
 
             </DialogActions>
         </Dialog>
     )
 }
 
-export default CustomDialog
+export default DialogDelete

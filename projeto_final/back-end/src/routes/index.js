@@ -8,7 +8,8 @@ const router = express.Router();
 
 router.use(mainRouter);
 router.use('/users', userRouter);
-router.use('/users', addressRouter);
+
+router.use('/users/', addressRouter);
 
 router.use('/products', productsRouter);
 

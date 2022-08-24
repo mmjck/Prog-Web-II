@@ -3,20 +3,39 @@ import { useNavigate, useParams } from "react-router-dom"
 import Api from "../../../services/api";
 
 
+import {
+    Typography, Box, Button, TextField,
+    LinearProgress, Paper
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import Contador from "../../../components/Contador";
+
+
+const validationSchema = yup.object({
+    nome: yup
+        .string('Insira seu nome')
+        .required('Nome is required'),
+    descricao: yup
+        .string('Insira seu email')
+        .required('Email is required'),
+    preco: yup
+        .number()
+        .required('Preço is required'),
+});
+
 
 const EditarProduto = () => {
 
-    const [nome, setNome] = useState('')
-    const [descricao, setDescricao] = useState('')
-    const [preco, setPreco] = useState(0)
     const [estoque, setEstoque] = useState(10)
-    const [loading, setLoadinng] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [product, setProduct] = useState(null)
 
 
-    const [errorNome, setErrorNome] = useState("")
-    const [hasError, setHasError] = useState(false)
 
     const navigate = useNavigate();
+    const theme = createTheme();
 
     const { id } = useParams();
 
@@ -24,13 +43,8 @@ const EditarProduto = () => {
         async () => {
             try {
                 const response = await Api.getProductById(id);
-                console.log({ response });
-
-                setNome(response.nome)
-                setDescricao(response.descricao)
-                setPreco(response.preco)
-                setEstoque(response.estoque)
-
+                console.log(response);
+                setProduct(response)
 
             } catch (error) {
                 console.log(error);
@@ -45,98 +59,107 @@ const EditarProduto = () => {
 
 
     const handleSubmit = async (e) => {
-        const produto = { nome, descricao, preco, estoque }
-        e.preventDefault()
-        setLoadinng(true)
-        setHasError(false)
+        const produto = { ...e, estoque, preco: parseInt(e.preco) }
+        setLoading(true)
+        console.log("produto");
 
+        console.log(produto);
         try {
             const response = await Api.updateProdut(produto, id);
-
             navigate(`/produto/${response.id}`)
-            console.log(response);
         } catch (error) {
             console.log(error);
-            setHasError(true)
-            if (error.response.data.errors) {
-                error.response.data.errors.forEach(element => {
-                    if (element.path === "nome") {
-                        setErrorNome(element.message)
-                    }
-                    console.log(element);
-                });
-            }
-            console.log(error.response.data.errors);
         }
         finally {
-            setLoadinng(false)
+            setLoading(false)
         }
     }
 
+    const formik = useFormik({
+        enableReinitialize: true,
+
+        initialValues: {
+            nome: product != null ? product.nome ?? '' : '',
+            descricao: product != null ? product.descricao ?? '' : '',
+            preco: product?.preco ?? 0,
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values, event) => {
+            console.log(event);
+            // e.preventDefault()
+            handleSubmit(values)
+
+        },
+    });
+
     return (
-        <div>
-            <h3>Editar Produto</h3>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="nome">Nome</label>
-                <input
-                    type="text"
-                    required
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+        <ThemeProvider
+            theme={theme}>
+            {loading && (
+                <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                </Box>
+            )}
+            <Typography component="h3">
+                Editar de produto
+            </Typography>
+            <Box component="form" onSubmit={formik.handleSubmit}>
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    value={formik.values.nome}
+                    onChange={formik.handleChange}
+                    error={formik.touched.nome && Boolean(formik.errors.nome)}
+                    helperText={formik.touched.nome && formik.errors.nome}
                     id="nome"
-                    className="form-control" />
-
-                {hasError && (
-                    <div class="invalid-feedback" style={{ display: "block" }}>
-                        {errorNome}
-                    </div>
-                )}
-                <label htmlFor="descricao">Descrição</label>
-                <textarea
-                    required
-                    value={descricao}
-                    onChange={(e) => setDescricao(e.target.value)}
+                    label="Nome"
+                    name="nome"
+                />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    value={formik.values.descricao}
+                    onChange={formik.handleChange}
+                    error={formik.touched.descricao && Boolean(formik.errors.descricao)}
+                    helperText={formik.touched.descricao && formik.errors.descricao}
                     id="descricao"
-                    className="form-control" />
-
-                <label htmlFor="preco">Preço</label>
-                <input
-                    required
-                    type="number"
-                    value={preco}
-                    onChange={(e) => setPreco(e.target.value)}
+                    label="Descrição"
+                    name="descricao"
+                />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    value={formik.values.preco}
+                    onChange={formik.handleChange}
+                    error={formik.touched.preco && Boolean(formik.errors.preco)}
+                    helperText={formik.touched.preco && formik.errors.preco}
                     id="preco"
-                    className="form-control" />
+                    label="Preço"
+                    name="preco"
+                    type="number"
+                />
+                <Contador value={estoque} increment={() => {
+                    setEstoque(estoque + 1)
+                }}
+                    decrement={() => {
+                        setEstoque(estoque - 1)
+                    }} />
 
-                {hasError && (
-                    <div class="invalid-feedback" style={{ display: "block" }}>
-                        {errorNome}
-                    </div>
-                )}
-                <label htmlFor="estoque">Estoque</label>
-                <select
-                    required
-                    value={estoque}
-                    onChange={(e) => setEstoque(e.target.value)}
-                    id="estoque"
-                    className="form-control">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                </select>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                >
+                    Atualizar
+                </Button>
 
-
-
-
-                {!loading ? (
-                    <button className="btn btn-primary mt-3" type="submit">Atualizar</button>) :
-                    (<div class="spinner-border" role="status" />)}
-
-            </form>
+            </Box>
 
 
-        </div >
 
+        </ThemeProvider>
 
 
     )

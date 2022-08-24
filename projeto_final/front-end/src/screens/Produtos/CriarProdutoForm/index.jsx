@@ -35,7 +35,6 @@ const CriarProdutoForm = () => {
     const theme = createTheme();
 
     const handleSubmit = async (e) => {
-        console.log(e);
         const produto = { ...e, estoque }
         setLoadinng(true)
 
@@ -58,7 +57,6 @@ const CriarProdutoForm = () => {
             nome: "",
             descricao: '',
             preco: 0,
-
         },
         validationSchema: validationSchema,
         onSubmit: (values, event) => {

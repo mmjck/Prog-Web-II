@@ -18,7 +18,7 @@ import { useCallback } from "react";
 import ImageIcon from '@mui/icons-material/AccountCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import CustomDialog from "../../components/Dialog";
+import DialogDelete from "../../components/DialogDelete";
 
 
 const Colaboradores = () => {
@@ -160,10 +160,10 @@ const Colaboradores = () => {
 
             {handleListCollaborators()}
 
-            <CustomDialog
+            <DialogDelete
                 isOpen={open}
-                close={handleClose}
-                confirm={handleDelete}
+                onClose={handleClose}
+                onConfirm={handleDelete}
                 title={"Deseja deletar esse colaborador"}
                 message={"Ao confirmar, não será possível reverter essa ação"}
             />

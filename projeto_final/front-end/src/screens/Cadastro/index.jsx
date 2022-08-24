@@ -4,10 +4,9 @@ import React from 'react';
 import Api from "../../services/api";
 import { VisibilityOff, Visibility } from '@mui/icons-material/';
 import {
-    InputAdornment,
-    Input,
-    Typography, Box, Button, TextField, IconButton, FormControl
-    , LinearProgress
+    Container,
+    Typography, Box, Button, TextField
+    , LinearProgress, Grid, Link
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useFormik } from 'formik';
@@ -85,96 +84,119 @@ const Signup = () => {
                     <LinearProgress />
                 </Box>
             )}
+            <Container component="main" maxWidth="xs">
 
-
-            <Typography component="h1" variant="h5">
-                Entrar
-            </Typography>
-            <Box component="form"
-                onSubmit={formik.handleSubmit} >
-                <TextField
-                    autoFocus
-                    required
-                    fullWidth
-                    name="nome"
-                    label="Nome completo"
-                    type="text"
-                    id="nome"
-                    value={formik.values.nome}
-                    onChange={formik.handleChange}
-                    error={formik.touched.nome && Boolean(formik.errors.nome)}
-                    helperText={formik.touched.nome && formik.errors.nome}
-                />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                    // value={email}
-                    // onChange={(e) => setEmail(e.target.value)}
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                />
-
-                <TextField
-                    margin="normal"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
-                    helperText={formik.touched.password && formik.errors.password}
-                    name="password"
-                    label="Senha"
-                    fullWidth
-                    // endAdornment={
-                    //     <InputAdornment position="end">
-                    //         <IconButton
-                    //             aria-label="toggle password visibility"
-                    //             onClick={handleClickShowPassword}
-                    //             onMouseDown={handleMouseDownPassword}
-                    //         >
-                    //             {showPassword ? <VisibilityOff /> : <Visibility />}
-                    //         </IconButton>
-                    //     </InputAdornment>
-                    // }
-                    type={"password"}
-                />
-
-                <TextField
-                    margin="normal"
-                    // value={confirmPassowrd}
-                    // onChange={(e) => setConfirmPassword(e.target.value)}
-                    fullWidth
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    label="Confirmar senha"
-                    type="password"
-                    // error={errorPassword}
-                    // helperText={errorPassword ? "As senhas não coincidem" : ""}
-                    value={formik.values.confirmPassowrd}
-                    onChange={(values) => {
-                        console.log(values);
-                        console.log("asdad");
-                        formik.handleChange()
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                     }}
-                    error={formik.touched.confirmPassowrd && Boolean(formik.errors.confirmPassowrd)}
-                    helperText={formik.touched.confirmPassowrd && formik.errors.confirmPassowrd}
-                />
-
-                <Button
-                    disabled={loading}
-                    type="submit"
-                    fullWidth
-                    variant="contained"
                 >
-                    Cadastrar
-                </Button>
 
-            </Box>
+                    <Typography component="h1" variant="h5">
+                        Cadastro
+                    </Typography>
+                    <Box component="form"
+                        onSubmit={formik.handleSubmit} >
+                        <TextField
+                            autoFocus
+                            required
+                            fullWidth
+                            name="nome"
+                            label="Nome completo"
+                            type="text"
+                            id="nome"
+                            value={formik.values.nome}
+                            onChange={formik.handleChange}
+                            error={formik.touched.nome && Boolean(formik.errors.nome)}
+                            helperText={formik.touched.nome && formik.errors.nome}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
+                            // value={email}
+                            // onChange={(e) => setEmail(e.target.value)}
+                            id="email"
+                            label="Email"
+                            name="email"
+                            autoComplete="email"
+                        />
+
+                        <TextField
+                            margin="normal"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                            name="password"
+                            label="Senha"
+                            fullWidth
+                            // endAdornment={
+                            //     <InputAdornment position="end">
+                            //         <IconButton
+                            //             aria-label="toggle password visibility"
+                            //             onClick={handleClickShowPassword}
+                            //             onMouseDown={handleMouseDownPassword}
+                            //         >
+                            //             {showPassword ? <VisibilityOff /> : <Visibility />}
+                            //         </IconButton>
+                            //     </InputAdornment>
+                            // }
+                            type={"password"}
+                        />
+
+                        <TextField
+                            margin="normal"
+                            // value={confirmPassowrd}
+                            // onChange={(e) => setConfirmPassword(e.target.value)}
+                            fullWidth
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            label="Confirmar senha"
+                            type="password"
+                            // error={errorPassword}
+                            // helperText={errorPassword ? "As senhas não coincidem" : ""}
+                            value={formik.values.confirmPassowrd}
+                            onChange={(values) => {
+                                console.log(values);
+                                console.log("asdad");
+                                formik.handleChange()
+                            }}
+                            error={formik.touched.confirmPassowrd && Boolean(formik.errors.confirmPassowrd)}
+                            helperText={formik.touched.confirmPassowrd && formik.errors.confirmPassowrd}
+                        />
+                        <Box sx={{
+                            marginTop: 2,
+                        }}>
+                        </Box>
+
+                        <Button
+                            disabled={loading}
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                        >
+                            Cadastrar
+                        </Button>
+                        <Grid container>
+
+                            <Grid item>
+                                <Link href="/login" variant="body2">
+                                    Já possui uma conta?
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+
+                </Box>
+            </Container>
         </ThemeProvider >
     );
 
