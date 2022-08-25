@@ -20,6 +20,7 @@ const listAddress = async (req, res) => {
     res.send(error);
   }
 };
+
 const create = async (req, res) => {
   const { id } = req.params;
   try {
@@ -54,14 +55,46 @@ const read = async (req, res) => {
     res.send(error);
   }
 };
-// const update = async (req, res) => {};
-// const remove = async (req, res) => {};
+const update = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Endereco.update(req.body, {
+      where: {
+        id,
+      },
+    });
+
+    return res.send({
+      message: 'Endereço atualizado com sucesso',
+    });
+  } catch (error) {
+    res.send(error);
+  }
+};
+const remove = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Endereco.destroy({
+      where: {
+        id,
+      },
+    });
+
+    return res.send({
+      message: 'Endereço deletado com sucesso',
+    });
+  } catch (error) {
+    res.send(error);
+  }
+};
 
 export default {
   listAddress,
-  // remove,
+  remove,
 
   create,
   read,
-  // update,
+  update,
 };
