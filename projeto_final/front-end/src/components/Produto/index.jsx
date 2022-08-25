@@ -1,20 +1,13 @@
 import {
-    CardHeader, CardContent, CardActions, Card,
-    LinearProgress,
+    CardHeader, CardContent, Card,
     Typography, Box, Button,
     Divider,
-    List, ListItem,
-    ListItemText,
-    Paper, ListItemAvatar,
-    Avatar,
-    IconButton,
+    CardActionArea
 } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ImageIcon from '@mui/icons-material/AccountCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { Link } from "react-router-dom"
+import { useState } from 'react';
 
+import { useNavigate } from "react-router-dom"
 
 
 const styles = {
@@ -22,7 +15,6 @@ const styles = {
         borderRadius: 5,
         textAlign: 'center',
         margin: 1,
-        pading: 10
     },
     header: {
         textAlign: 'center',
@@ -36,42 +28,92 @@ const styles = {
         alignContent: "center",
         justifyContent: "center",
         display: 'flex',
-        //  justifyContent: 'space-around',
     },
 };
 
 
 const CardProduto = ({ produto }) => {
-    const { id, nome, descricao, preco, estoque } = produto;
-    return (
-        <Card sx={styles.root}>
-            <CardHeader title={nome} sx={styles.header} />
-            <Divider variant="middle" />
-            <CardContent>
-                <Typography variant="h4" align="center" sx={{ fontWeight: "bold" }}>
-                    R$ {preco}
-                </Typography>
+    const { id, nome, descricao, preco } = produto;
+    const [total, setTotal] = useState(0)
+
+
+    const navigate = useNavigate();
+
+    const contador = () => {
+        return (
+            <Box sx={{
+                display: "flex", alignItems: "flex-start", flexDirection: "column"
+            }}>
                 <Box sx={{
-                    marginTop: 5,
-                    height: 50,
-                    overflow: "hidden", textOverflow: "ellipsis",
+                    display: "flex", justifyContent: "center", flexDirection: "row"
                 }}>
-                    <Typography nowrap variant="p" align="center" sx={{
-                        overflow: "hidden", textOverflow: "ellipsis",
-                        textAlign: "justify"
-                    }}>
-                        {descricao}
-                    </Typography>
+                    <Button variant="contained" onClick={
+                        () => {
+                            if (total > 0) {
+                                setTotal(total - 1)
+                            }
+                        }}>
+                        -
+                    </Button>
+                    <Typography sx={{ paddingX: 1, alignSelf: "center" }}>{total}</Typography>
+                    <Button variant="contained"
+                        onClick={
+                            () => {
+                                setTotal(total + 1)
+                            }}>
+                        +
+                    </Button>
                 </Box>
-            </CardContent>
-            <Divider variant="middle" />
-            <CardActions sx={styles.action}>
+
+
+                <Button variant="outlined"
+                    sx={{
+                        marginTop: 2
+
+                    }}
+                    color="success"
+                    onClick={() => { }}>
+                    <Typography component="p" sx={{ fontSize: 12 }} >
+                        Adicionar ao carrinho
+                    </Typography>
+                </Button>
+            </Box >
+        )
+    }
+
+    // onclick={() => {
+    //     // navigate(`/produto/${id}`)
+    // }}
+    return (
+        <Card sx={styles.root} >
+            <CardContent>
+                <CardHeader title={nome} sx={styles.header} />
+                <Divider variant="middle" />
+                <CardContent>
+                    <Typography variant="h4" align="center" sx={{ fontWeight: "bold" }}>
+                        R$ {preco}
+                    </Typography>
+                    <Box sx={{
+                        marginTop: 5,
+                        height: 50,
+                        overflow: "hidden", textOverflow: "ellipsis",
+                    }}>
+                        <Typography nowrap variant="p" align="center" sx={{
+                            overflow: "hidden", textOverflow: "ellipsis",
+                            textAlign: "justify"
+                        }}>
+                            {descricao}
+                        </Typography>
+                    </Box>
+                </CardContent>
+                <Divider variant="middle" />
                 <Button variant="text" color="primary" style={styles.button}>
                     <Link sx="btn btn-primary" to={`/produto/${id}`}>Ver mais</Link>
                 </Button>
-
-            </CardActions>
+                {contador()}
+            </CardContent>
         </Card >
+
     )
 
 }
