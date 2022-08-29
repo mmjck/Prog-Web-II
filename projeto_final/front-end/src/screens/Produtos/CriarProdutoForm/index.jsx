@@ -4,7 +4,9 @@ import Api from "../../../services/api";
 
 import {
     Typography, Box, Button, TextField,
-    LinearProgress, Paper
+    LinearProgress, Input,
+    IconButton,
+    AttachFileIcon
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useFormik } from 'formik';
@@ -22,6 +24,8 @@ const validationSchema = yup.object({
     preco: yup
         .number()
         .required('Preço is required'),
+    file: yup.mixed().required(),
+
 });
 
 const CriarProdutoForm = () => {
@@ -57,12 +61,14 @@ const CriarProdutoForm = () => {
             nome: "",
             descricao: '',
             preco: 0,
+            file: null,
         },
         validationSchema: validationSchema,
-        onSubmit: (values, event) => {
-            console.log(event);
+        onSubmit: (values) => {
             // e.preventDefault()
-            handleSubmit(values)
+
+            console.log(values);
+            // handleSubmit(values)
 
         },
     });
@@ -116,6 +122,14 @@ const CriarProdutoForm = () => {
                     type="number"
                 />
 
+
+                <Input id="file"
+                    name="file"
+                    type="file"
+                    accept="image/*"
+                    onChange={formik.handleChange}
+                    error={formik.touched.file && Boolean(formik.errors.file)}
+                    helperText={formik.touched.file && formik.errors.file} />
 
 
                 <Contador value={estoque} increment={() => {

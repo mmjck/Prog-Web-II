@@ -23,32 +23,9 @@ const validationSchema = yup.object({
         .string('Insita o bairro')
         .required('Password is required'),
 });
-const AddressFormDialog = ({ isOpen, onClose, title, message, data }) => {
-    const [loading, setLoading] = useState(false)
+const AddressFormDialog = ({ isOpen, onClose, title, message, data, onConfirm, loading }) => {
 
-    const handleSubmitCreate = async () => {
-        setLoading(true)
-        try {
 
-        } catch (error) {
-
-        } finally {
-            setLoading(false)
-
-        }
-    }
-
-    const handleSubmitEdit = async () => {
-        setLoading(true)
-        try {
-
-        } catch (error) {
-
-        } finally {
-            setLoading(false)
-
-        }
-    }
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -62,13 +39,7 @@ const AddressFormDialog = ({ isOpen, onClose, title, message, data }) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
-
-            // is edint address
-            if (data != null) {
-                return handleSubmitEdit(values)
-            }
-            handleSubmitCreate(values)
+            onConfirm()
         },
     });
 
@@ -147,7 +118,8 @@ const AddressFormDialog = ({ isOpen, onClose, title, message, data }) => {
                         helperText={formik.touched.uf && formik.errors.uf}
                     />
                     <Box sx={{
-                        display: "flex", flexDirection: "row",
+                        display: "flex",
+                        flexDirection: "row",
                         justifyContent: "space-between",
                         paddingX: 10,
                         paddingY: 5

@@ -22,7 +22,7 @@ const Produto = () => {
 
     const [produto, setProduto] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [ammount, setAmmount] = useState(0);
+    const [ammount, setAmmount] = useState(1);
     const [totalValue, setTotalValue] = useState(0);
     const [open, setOpen] = useState(false);
 
@@ -45,6 +45,7 @@ const Produto = () => {
     );
     useEffect(() => {
         getProduct();
+
 
     }, [getProduct]);
 

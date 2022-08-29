@@ -82,7 +82,8 @@ const CardProduto = ({ produto, addCart }) => {
 
                 )}
                 {!isAdd ? (
-                    <Button variant="outlined"
+                    <Button
+                        variant="outlined"
                         sx={{
                             marginTop: 2
                         }}

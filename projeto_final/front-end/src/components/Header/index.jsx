@@ -61,12 +61,12 @@ const Header = () => {
         return (
             <div>
                 {buttonHeader("Sobre", "/sobre")}
-                {buttonHeader("Carrinho", "/sobre")}
+                {buttonHeader("Carrinho", "/cart")}
                 {!logged && buttonHeader("Login", "/login")}
                 {!logged && buttonHeader("Cadastro", "/signup")}
-                {logged && buttonHeader("Sair", "/logout")}
+                {!logged && buttonHeader("Sair", "/logout")}
 
-                {logged && (
+                {!logged && (
                     <IconButton aria-label="delete" size="large"
                         {...{
                             color: "inherit",

@@ -15,20 +15,20 @@ import {
   Signup,
   Colaboradores,
   CriarColaborador,
-  Perfil
+  Perfil, Carrinho
 } from "./screens"
+
+
+const Pages = {
+  CART: <Carrinho />,
+  PROFILE: <Perfil />
+
+}
 
 const App = () => {
 
-  const user = useSelector((state) => state.userData);
 
 
-  useEffect(() => {
-    console.log(user);
-  }, [user])
-
-
-  console.log(`asasd`);
 
   return (
     <BrowserRouter>
@@ -46,7 +46,7 @@ const App = () => {
 
 
           <Route path='/sobre' element={< Sobre />}></Route>
-          <Route path='/cart' element={< Sobre />}></Route>
+          <Route path='/cart' element={Pages.CART} />
 
           <Route path='/login' element={< Login />}></Route>
           <Route path='/signup' element={< Signup />}></Route>
@@ -54,8 +54,7 @@ const App = () => {
 
 
 
-          <Route path='/perfil' element={< Perfil />}></Route>
-
+          <Route path='/perfil' element={Pages.PROFILE} />
         </Routes>
       </div>
     </BrowserRouter>

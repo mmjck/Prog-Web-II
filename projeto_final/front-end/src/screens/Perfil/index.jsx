@@ -24,7 +24,7 @@ const Perfil = () => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [open, setOpen] = useState(false);
-    const [data, setData] = React.useState(false);
+    const [data, setData] = useState(false);
 
     const [openAddress, setOpenAddress] = useState(false);
 

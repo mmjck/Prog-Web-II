@@ -5,30 +5,37 @@ import CardProduto from "../../components/Produto";
 
 
 import {
-    CardHeader, CardContent, CardActions, Card,
-    LinearProgress,
     Typography, Box, Button,
-    Divider,
-    List, ListItem,
-    ListItemText,
-    Paper, ListItemAvatar,
-    Avatar,
-    IconButton,
     ButtonGroup,
     TextField,
+    Snackbar, Alert
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ImageIcon from '@mui/icons-material/AccountCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "../../redux/actions/cartActions";
+
+
 
 
 const Products = () => {
     const [produtos, setProdutos] = useState([]);
     const [searchString, setSearchString] = useState("");
     const [searchProdutos, setSearchProdutos] = useState([]);
+    const [open, setOpen] = useState(false);
 
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
     const navigate = useNavigate();
     const theme = createTheme();
 
@@ -53,6 +60,10 @@ const Products = () => {
     useEffect(() => {
         setSearchProdutos(produtos.filter(prod => prod.nome.toLowerCase().includes(searchString.toLowerCase())))
     }, [produtos, searchString])
+
+
+    const dispatch = useDispatch();
+
 
 
     return (
@@ -97,7 +108,15 @@ const Products = () => {
             <div class="row row-cols-1 row-cols-md-5">
 
                 {searchString === '' && produtos.map(produto => <div className="row" key={produto.id}>
-                    <CardProduto produto={produto} />
+                    <CardProduto produto={produto} addCart={(total) => {
+                        if (total > 0) {
+                            dispatch(addProductToCart(produto, total));
+                            handleClick()
+
+                            dispatch(addProductToCart(produto, total));
+                            handleClick()
+                        }
+                    }} />
 
                 </div>)}
             </div>
@@ -105,10 +124,21 @@ const Products = () => {
 
                 {searchString !== '' && searchProdutos.map(produto => <div className="row" key={produto.id}>
 
-                    <CardProduto produto={produto} />
+                    <CardProduto produto={produto} addCart={(total) => {
+
+                        if (total > 0) {
+                            dispatch(addProductToCart(produto, total));
+                            handleClick()
+                        }
+                    }} />
                 </div>)}
             </div>
 
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    This is a success message!
+                </Alert>
+            </Snackbar>
 
         </ThemeProvider >
 

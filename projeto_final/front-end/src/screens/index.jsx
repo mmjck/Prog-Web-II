@@ -17,6 +17,7 @@ import Sobre from "./Sobre";
 import Login from "./Login";
 import Signup from "./Cadastro";
 import Perfil from "./Perfil";
+import Carrinho from "./Carrinho";
 
 export {
     // perfil
@@ -36,5 +37,8 @@ export {
     Produto,
     EditarProduto,
     CriarProdutoForm,
-    Sobre
+    Sobre,
+
+
+    Carrinho
 }

@@ -1,13 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userReducer from '../reducers/userReducer'
+// import userReducer from '../reducers/userReducer'
+// import cartReducer from '../reducers/cartReducer'
+  import allReducers from '../reducers';
+
+
+
+const initialState = {
+  user: null,
+  isLogged: false,
+  cart: []
+};
 
 
 const store = configureStore({
-  reducer: {
-    userData: userReducer,
-  }
+  reducer: allReducers
+  ,
+   preloadedState: initialState
 })
 
 
-store.getState();
+console.log( store.getState());
 export default store;
