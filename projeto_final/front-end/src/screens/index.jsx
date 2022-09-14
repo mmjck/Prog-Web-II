@@ -17,7 +17,10 @@ import Sobre from "./Sobre";
 import Login from "./Login";
 import Signup from "./Cadastro";
 import Perfil from "./Perfil";
-import Carrinho from "./Carrinho";
+
+
+import Carrinho from "./Carrinho/Checkout";
+import AddressCart from "./Carrinho/Address";
 
 export {
     // perfil
@@ -40,5 +43,6 @@ export {
     Sobre,
 
 
-    Carrinho
+    Carrinho,
+    AddressCart
 }

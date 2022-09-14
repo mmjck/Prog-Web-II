@@ -13,15 +13,28 @@ import {
     Box, Button,
 
 } from '@mui/material';
-import { useState } from 'react';
 
 const validationSchema = yup.object({
     logradouro: yup
-        .string('Insira o logradouro')
-        .required('Email is required'),
+        .string()
+        .required('Insira o logradoudo.'),
     bairro: yup
-        .string('Insita o bairro')
-        .required('Password is required'),
+        .string()
+        .required('Insira o bairro')
+    ,
+    cidade: yup
+        .string()
+        .required('Insira a sua cidade'),
+    numero: yup
+        .string()
+        .required('Insira o numero'),
+    uf: yup
+        .string()
+        .required('Insira o estado'),
+    cep: yup
+        .string()
+        .required('Insira o CEP'),
+
 });
 const AddressFormDialog = ({ isOpen, onClose, title, message, data, onConfirm, loading }) => {
 
@@ -39,7 +52,8 @@ const AddressFormDialog = ({ isOpen, onClose, title, message, data, onConfirm, l
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            onConfirm()
+            console.log("values", values);
+            onConfirm(values)
         },
     });
 
@@ -56,7 +70,7 @@ const AddressFormDialog = ({ isOpen, onClose, title, message, data, onConfirm, l
                 </DialogContentText>
                 <Box component="form" onSubmit={formik.handleSubmit}>
                     <TextField
-                        // autoFocus
+                        autoFocus
                         margin="normal"
                         id="logradouro"
                         label={data != null ? "" : "Logradouro"}
@@ -79,6 +93,18 @@ const AddressFormDialog = ({ isOpen, onClose, title, message, data, onConfirm, l
                         onChange={formik.handleChange}
                         error={formik.touched.numero && Boolean(formik.errors.numero)}
                         helperText={formik.touched.numero && formik.errors.numero}
+                    />
+                    <TextField
+                        margin="normal"
+                        id="cep"
+                        label={data != null ? "" : "CEP"}
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        value={formik.values.cep}
+                        onChange={formik.handleChange}
+                        error={formik.touched.cep && Boolean(formik.errors.cep)}
+                        helperText={formik.touched.cep && formik.errors.cep}
                     />
                     <TextField
                         margin="normal"

@@ -8,6 +8,13 @@ const Api = {
         return response.data;
     },
 
+
+    async logout(data){
+        const response = await client.post("/logout", data)
+        return response.data;
+    },
+
+
     //usado para criar colaboratores e fazer cadastro
     async signup(data){
         const response = await client.post("/users", data)
@@ -22,6 +29,13 @@ const Api = {
 
     async deleteUser(id){
         const response = await client.delete(`/users/${id}/`)
+        return response.data;
+    },
+
+
+
+    async createAddress(id, data){
+        const response = await client.post(`/users/${id}/address`, {data, usuarioID: id})
         return response.data;
     },
   
@@ -54,7 +68,12 @@ const Api = {
 
     async deleteProdut(id){
         const response = await client.delete(`/products/${id}`)
-        console.log({response}, "responmse");
+        return response;
+    },
+
+    async createOrder(id, data){
+        const response = await client.post(`/users/${id}/orders`, data)
+        return response;
     }
 }
 

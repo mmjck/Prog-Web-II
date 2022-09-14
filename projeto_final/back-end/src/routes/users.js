@@ -1,6 +1,7 @@
 import express from 'express';
 import addressController from '../controllers/addressController';
 import usersController from '../controllers/usersController';
+import orderController from '../controllers/orderController';
 
 const router = express.Router();
 
@@ -13,5 +14,8 @@ router.put('/', usersController.update);
 router.get('/:id/collaborators', usersController.listAllCollaborators);
 
 router.get('/:id/address', addressController.create);
+
+router.post('/:id/orders', orderController.create);
+router.get('/:id/orders', orderController.read);
 
 export default router;

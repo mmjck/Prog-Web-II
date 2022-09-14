@@ -2,27 +2,45 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Endereco extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
       // define association here
       this.belongsTo(models.Usuario);
+
+      // define association here
+      this.hasMany(models.Compra);
     }
   }
   Endereco.init(
     {
-      usuarioID: DataTypes.INTEGER,
-      logradouro: DataTypes.STRING,
-      numero: DataTypes.INTEGER,
-      bairro: DataTypes.STRING,
-      cidade: DataTypes.STRING,
-      uf: DataTypes.STRING,
-      cep: DataTypes.STRING,
+      usuarioID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      logradouro: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      numero: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      bairro: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      cidade: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      uf: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      cep: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,

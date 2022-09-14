@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
 
       //address
       this.hasMany(models.Endereco);
+
+      //orders
+      this.hasMany(models.Compra);
     }
   }
   Usuario.init(
@@ -43,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           len: {
-            args: [8, 20],
+            args: [8, 100],
             msg: 'Senha fora do padrão',
           },
         },

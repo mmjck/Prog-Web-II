@@ -15,13 +15,17 @@ import {
   Signup,
   Colaboradores,
   CriarColaborador,
-  Perfil, Carrinho
+  Perfil,
+  Carrinho,
+  AddressCart
 } from "./screens"
 
 
 const Pages = {
   CART: <Carrinho />,
-  PROFILE: <Perfil />
+  CART_ADDRESS: <AddressCart />,
+  PROFILE: <Perfil />,
+  ABOUT: <Sobre />
 
 }
 
@@ -45,13 +49,13 @@ const App = () => {
           <Route path='/colaboradores/adicionar' element={< CriarColaborador />}></Route>
 
 
-          <Route path='/sobre' element={< Sobre />}></Route>
+          <Route path='/sobre' element={Pages.ABOUT} ></Route>
           <Route path='/cart' element={Pages.CART} />
+          <Route path='/cart/address' element={Pages.CART_ADDRESS} />
+
 
           <Route path='/login' element={< Login />}></Route>
           <Route path='/signup' element={< Signup />}></Route>
-
-
 
 
           <Route path='/perfil' element={Pages.PROFILE} />

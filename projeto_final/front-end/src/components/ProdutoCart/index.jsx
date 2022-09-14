@@ -41,11 +41,7 @@ const CardProduto = ({ produto, addCart }) => {
         return state?.shopingCart.cart
     });
 
-
-
-
     useEffect(() => {
-        console.log(cart);
         const finded = cart.find(item => item.id === produto.id)
         if (finded) {
             setIsAdd(true)
@@ -58,7 +54,6 @@ const CardProduto = ({ produto, addCart }) => {
                 display: "flex", alignItems: "flex-start", flexDirection: "column"
             }}>
                 {!isAdd && (
-
                     <Box sx={{
                         display: "flex", justifyContent: "center", flexDirection: "row"
                     }}>

@@ -11,11 +11,8 @@ import {
     Snackbar, Alert
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useDispatch } from "react-redux";
-import { addProductToCart } from "../../redux/actions/cartActions";
-
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { addProductToCart } from "../../redux/slices/cartSlices";
 
 const Products = () => {
     const [produtos, setProdutos] = useState([]);
@@ -26,6 +23,7 @@ const Products = () => {
     const handleClick = () => {
         setOpen(true);
     };
+    const userData = useSelector((state) => state.user);
 
 
 
@@ -69,64 +67,64 @@ const Products = () => {
     return (
         <ThemeProvider
             theme={theme}>
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                p: 1,
-                m: 1,
-                bgcolor: 'background.paper',
-                borderRadius: 1,
-            }}>
-                <Typography variant="h3" >Listagem de Produtos</Typography>
-                <ButtonGroup
-                    variant="outlined"
-                    aria-label="Disabled elevation buttons"
-                >
-                    <Button onClick={() => {
-                        navigate("/produto/add")
-                    }}
+            {userData.user?.tipoUsuarioId === 2 && (
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    p: 1,
+                    m: 1,
+                    bgcolor: 'background.paper',
+                    borderRadius: 1,
+                }}>
+                    <Typography variant="h3" >Listagem de Produtos</Typography>
+                    <ButtonGroup
+                        variant="outlined"
+                        aria-label="Disabled elevation buttons"
                     >
+                        <Button onClick={() => {
+                            navigate("/produto/add")
+                        }}
+                        >
 
-                        <Typography variant="p" >Adicionar Produtos</Typography>
+                            <Typography variant="p" >Adicionar Produtos</Typography>
 
-                    </Button >
-                    <Button onClick={() => {
-                        navigate("/colaboradores/")
-                    }}
-                    >
-                        <Typography variant="p" >Colaborador</Typography>
-                    </Button>
-                </ButtonGroup>
+                        </Button >
+                        <Button onClick={() => {
+                            navigate("/colaboradores/")
+                        }}
+                        >
+                            <Typography variant="p" >Colaborador</Typography>
+                        </Button>
+                    </ButtonGroup>
 
-            </Box>
-
+                </Box>
+            )}
 
             <TextField
                 label="Procure por um produto"
 
                 fullWidth onChange={(e) => setSearchString(e.target.value)} type="text" value={searchString} />
-            <div class="row row-cols-1 row-cols-md-5">
+            <div className="row row-cols-1 row-cols-md-5">
 
                 {searchString === '' && produtos.map(produto => <div className="row" key={produto.id}>
                     <CardProduto produto={produto} addCart={(total) => {
+                        console.log(total);
+
                         if (total > 0) {
-                            dispatch(addProductToCart(produto, total));
+                            dispatch(addProductToCart({ produto, total }));
                             handleClick()
 
-                            dispatch(addProductToCart(produto, total));
-                            handleClick()
                         }
                     }} />
 
                 </div>)}
             </div>
-            <div class="card-group">
-
+            <div className="card-group">
                 {searchString !== '' && searchProdutos.map(produto => <div className="row" key={produto.id}>
-
                     <CardProduto produto={produto} addCart={(total) => {
-
+                        console.log(total);
                         if (total > 0) {
+
                             dispatch(addProductToCart(produto, total));
                             handleClick()
                         }

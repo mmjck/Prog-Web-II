@@ -12,7 +12,7 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, Add, SentimentDissatisfied } from '@mui/icons-material'
-import AddressFormDialog from "../../components/AddressForm";
+import AddressFormDialog from "../../../components/AddressForm";
 
 
 const Carrinho = () => {
@@ -21,24 +21,19 @@ const Carrinho = () => {
     const [data, setData] = useState(null);
 
 
+    const navigate = useNavigate();
+    const theme = createTheme();
+
+
     const shopingCart = useSelector((state) => {
         return state?.shopingCart
     });
 
-    const navigate = useNavigate();
-    const theme = createTheme();
 
-    console.log(shopingCart);
-
-
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const userData = useSelector((state) => {
+        console.log(state);
+        return state?.user
+    });
 
 
 
@@ -60,11 +55,6 @@ const Carrinho = () => {
                                 justifyContent: "space-between",
                                 width: 700,
                             }}>
-
-
-
-
-
                                 <Box sx={{
                                     width: 400,
                                 }}>
@@ -122,31 +112,18 @@ const Carrinho = () => {
         )
     }
 
-    const dataAddress = () => {
-        const data = {
-            "id": 1,
-            "usuarioID": 37,
-            "logradouro": "Tocantins",
-            "numero": 2482,
-            "bairro": "Japiim",
-            "cidade": "Westminster",
-            "uf": "São Paulo",
-            "cep": null,
-            "createdAt": "2022-08-16T16:13:11.000Z",
-            "updatedAt": "2022-08-24T04:27:42.000Z",
-            "UsuarioId": 37
-        };
+    const handleSubmit = () => {
+        console.log("entroiu");
 
-        return (
-            <Box
-                sx={{ flexDirection: "column", display: "flex" }}>
-                <Typography variant="p" > Logradouro:  {data.logradouro} </Typography>
-                <Typography variant="p" > Numero:  {data.numero} </Typography>
+        console.log(userData);
+        if (userData) {
+            if (userData.isLogged === false) {
+                return navigate("/login")
+            }
 
-                <Typography variant="p" > Bairro:  {data.bairro} </Typography>
-                <Typography variant="p" > Cidade:  {data.cidade} </Typography>
-            </Box>
-        )
+
+            return navigate("/cart/address", { f: {} })
+        }
     }
 
 
@@ -197,7 +174,7 @@ const Carrinho = () => {
 
                     </Box>
                     <br />
-                    <Button variant="contained" color="success" fullWidth >
+                    <Button variant="contained" color="success" fullWidth onClick={handleSubmit}>
                         <Box sx={{ flexDirection: "row", display: "flex" }} >
                             <Typography variant="p" >Concluir Compra</Typography>
                         </Box>
@@ -210,7 +187,7 @@ const Carrinho = () => {
 
             <Divider sx={{ borderBottomWidth: 5 }} />
 
-            <Box
+            {/* <Box
                 sx={{ flexDirection: "row", display: "flex" }}>
                 <Box sx={{ p: 1 }}>
                     <Typography variant="p" > Enviar para: </Typography>
@@ -230,15 +207,15 @@ const Carrinho = () => {
                         )}
                     </Box>
                 </Box>
-            </Box>
-            <AddressFormDialog
+            </Box> */}
+            {/* <AddressFormDialog
                 isOpen={open}
                 onClose={handleClose}
                 title="Adicionar endereço"
                 message="Insira os dados para adicionar um novo endereço"
                 data={data}
                 onConfirm={() => { }}
-            />
+            /> */}
 
 
         </ThemeProvider>

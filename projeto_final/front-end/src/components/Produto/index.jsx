@@ -41,11 +41,13 @@ const CardProduto = ({ produto, addCart }) => {
         return state?.shopingCart.cart
     });
 
-
+    const a = useSelector((state) => {
+        return state;
+    });
 
 
     useEffect(() => {
-        console.log(cart);
+        console.log(a);
         const finded = cart.find(item => item.id === produto.id)
         if (finded) {
             setIsAdd(true)

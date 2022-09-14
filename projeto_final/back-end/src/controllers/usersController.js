@@ -1,6 +1,4 @@
 import { Usuario, TipoUsuario, Endereco } from '../models';
-// import { StatusCodes } from "http-status-codes";
-// import { v4 as uuidv4 } from "uuid";
 import { Op } from 'sequelize';
 import { genSalt, hash } from 'bcryptjs';
 /**
@@ -73,26 +71,28 @@ const create = async (req, res) => {
 const read = async (req, res) => {
   const { id } = req.params;
   try {
-    const usuario = await Usuario.findByPk(id, {
+    console.log(id);
+    const usuario = await Usuario.findOne({
+      where: {
+        id: id,
+      },
       include: [
-        // {
-        //   association: 'Endereco',
-        // },
-        {
-          model: TipoUsuario,
-          // whe
-        },
         {
           model: Endereco,
+          required: false,
           where: {
             usuarioID: id,
           },
         },
+        {
+          model: TipoUsuario,
+        },
       ],
     });
+
+    console.log(usuario);
     res.json(usuario);
   } catch (error) {
-    console.log(error);
     res.status(500).json(error);
   }
 };
@@ -144,6 +144,17 @@ const update = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     tags: [Users]
+ *     description: List all collaborators from shop
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 const listAllCollaborators = async (req, res) => {
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const size = req.query.size ? parseInt(req.query.size) : 10;

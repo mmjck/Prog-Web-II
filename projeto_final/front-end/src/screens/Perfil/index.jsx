@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import DialogDelete from "../../components/DialogDelete";
 import AddressFormDialog from "../../components/AddressForm";
+import { useSelector } from "react-redux";
 
 
 const Perfil = () => {
@@ -27,6 +28,7 @@ const Perfil = () => {
     const [data, setData] = useState(false);
 
     const [openAddress, setOpenAddress] = useState(false);
+    const userData = useSelector((state) => state.user);
 
     const navigate = useNavigate();
     const theme = createTheme();
@@ -44,7 +46,6 @@ const Perfil = () => {
     const handleClickOpenAddressDialog = (data) => {
 
         setData(data)
-        console.log(data);
         setOpenAddress(true);
     };
 
@@ -58,7 +59,6 @@ const Perfil = () => {
     const handleDelete = async () => {
         setLoading(true)
         try {
-
             handleClose()
 
         } catch (error) {
@@ -72,8 +72,9 @@ const Perfil = () => {
     const getUser = useCallback(async () => {
         setLoading(true)
         try {
-            const response = await Api.getUser(37)
-            console.log(response);
+            const { id } = userData?.user;
+
+            const response = await Api.getUser(id)
             setUser(response)
         } catch (error) {
             console.log(error);
@@ -184,9 +185,13 @@ const Perfil = () => {
                 <Typography variant="h5">
                     Endereços cadastrados
                 </Typography>
-                {listAddress
-                    (user.Enderecos
-                    )}
+                {user?.Enderecos ? listAddress
+                    (user?.Enderecos
+                    ) : (
+                    <Typography variant="h6">
+                        Você não possui endedeços cadatrados
+                    </Typography>
+                )}
             </Box>
 
 

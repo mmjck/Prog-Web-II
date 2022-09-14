@@ -23,6 +23,10 @@ const listAddress = async (req, res) => {
 
 const create = async (req, res) => {
   const { id } = req.params;
+
+  console.log({ ...req.body });
+
+  const { data } = req.body;
   try {
     const usuario = await Usuario.findByPk(id);
 
@@ -31,12 +35,16 @@ const create = async (req, res) => {
         message: 'Usuario nao existe',
       });
     }
-    await Endereco.create({ ...req.body, usuarioID: id });
 
-    return res.send({
-      message: 'Endereço cadastrado com sucesso',
+    console.log({ ...data, usuarioID: id });
+
+    const address = await Endereco.create({ ...data, usuarioID: id });
+
+    return res.status(200).json({
+      address,
     });
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 };

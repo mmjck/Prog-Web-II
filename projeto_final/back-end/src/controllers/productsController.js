@@ -27,7 +27,11 @@ const create = async (req, res) => {
 const read = async (req, res) => {
   const { id } = req.params;
   try {
-    const produtos = await Produto.findByPk(id);
+    const produtos = await Produto.findOne({
+      where: {
+        id: id,
+      },
+    });
     res.json(produtos);
   } catch (error) {
     res.status(500).json(error);
