@@ -12,6 +12,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+
+      imageUrl: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       preco: {
         type: Sequelize.DECIMAL,
         allowNull: false,

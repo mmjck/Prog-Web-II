@@ -2,6 +2,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import cors from 'cors';
+import morgan from 'morgan';
+const path = require('path');
 
 import router from './routes/';
 const swaggerJsDoc = require('swagger-jsdoc');
@@ -13,35 +15,21 @@ require('dotenv').config({ path: `${__dirname}/../../.env` });
 const PORT = process.env.PORT_BACK || 3333;
 
 const app = express();
+
+app.use(
+  '/files',
+  express.static(path.resolve(__dirname, '..', 'public', 'uploads'))
+);
+
 app.use(cors({ credentials: true, origin: 'http://localhost:3366' }));
 app.use(express.json());
-
-let demoLogger = (req, res, next) => {
-  let current_datetime = new Date();
-  let formatted_date =
-    current_datetime.getFullYear() +
-    '-' +
-    (current_datetime.getMonth() + 1) +
-    '-' +
-    current_datetime.getDate() +
-    ' ' +
-    current_datetime.getHours() +
-    ':' +
-    current_datetime.getMinutes() +
-    ':' +
-    current_datetime.getSeconds();
-  let method = req.method;
-  let url = req.url;
-  let status = res.statusCode;
-  let log = `[${formatted_date}] ${method}:${url} ${status}`;
-  console.log(log);
-  next();
-};
+app.use(morgan('dev'));
+console.log(path.resolve(__dirname, '../', 'public', 'uploads'));
 
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: 'Shop API',
+      title: 'Minha loja API',
       version: '1.0.0',
     },
   },
@@ -49,8 +37,6 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-
-app.use(demoLogger);
 
 app.use(
   session({

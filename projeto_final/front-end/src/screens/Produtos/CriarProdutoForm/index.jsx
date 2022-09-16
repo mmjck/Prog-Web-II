@@ -1,37 +1,33 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Api from "../../../services/api";
-
 import {
     Typography, Box, Button, TextField,
     LinearProgress, Input,
-    IconButton,
-    AttachFileIcon
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Contador from "../../../components/Contador";
 
-
 const validationSchema = yup.object({
     nome: yup
-        .string('Insira seu nome')
-        .required('Nome is required'),
+        .string()
+        .required('Insira o nome do Produto'),
     descricao: yup
-        .string('Insira seu email')
-        .required('Email is required'),
+        .string()
+        .required("Insira uma descrição"),
     preco: yup
         .number()
         .required('Preço is required'),
-    file: yup.mixed().required(),
-
+    // file: yup.mixed().required(),
 });
 
 const CriarProdutoForm = () => {
 
     const [estoque, setEstoque] = useState(1)
     const [loading, setLoadinng] = useState(false)
+    const [image, setImage] = useState(null)
 
 
 
@@ -40,13 +36,20 @@ const CriarProdutoForm = () => {
 
     const handleSubmit = async (e) => {
         const produto = { ...e, estoque }
+        console.log("e, ", e.file, image);
         setLoadinng(true)
+        const formData = new FormData()
+        formData.append('file', image.data)
 
+        console.log("formdata", formData);
         try {
-            const response = await Api.createProdut(produto);
+            const { path } = await Api.uploadImage(formData)
 
-            navigate(`/produto/${response.id}`)
-            console.log(response);
+            console.log(path);
+            // const response = await Api.createProdut({ ...produto, path });
+
+            // navigate(`/produto/${response.id}`)
+            // console.log(response);
         } catch (error) {
             console.log(error);
 
@@ -56,20 +59,24 @@ const CriarProdutoForm = () => {
         }
     }
 
+    const handleFileChange = (e) => {
+        console.log(e.target.files);
+        const img = {
+            preview: URL.createObjectURL(e.target.files[0]),
+            data: e.target.files[0],
+        }
+        setImage(img)
+    }
+
     const formik = useFormik({
         initialValues: {
             nome: "",
             descricao: '',
             preco: 0,
-            file: null,
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // e.preventDefault()
-
-            console.log(values);
-            // handleSubmit(values)
-
+            handleSubmit(values)
         },
     });
 
@@ -123,13 +130,13 @@ const CriarProdutoForm = () => {
                 />
 
 
-                <Input id="file"
+                <Input
+                    id="file"
                     name="file"
                     type="file"
                     accept="image/*"
-                    onChange={formik.handleChange}
-                    error={formik.touched.file && Boolean(formik.errors.file)}
-                    helperText={formik.touched.file && formik.errors.file} />
+                    onChange={handleFileChange}
+                />
 
 
                 <Contador value={estoque} increment={() => {
@@ -146,13 +153,8 @@ const CriarProdutoForm = () => {
                 >
                     Cadastrar
                 </Button>
-
             </Box>
-
-
         </ThemeProvider >
-
-
     )
 }
 

@@ -24,6 +24,18 @@ const create = async (req, res) => {
   }
 };
 
+const uploadImage = async (req, res) => {
+  try {
+    const { originalname: file, filename: path } = req.file;
+
+    console.log(req.file);
+    res.json({ file, path });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
 const read = async (req, res) => {
   const { id } = req.params;
   try {
@@ -59,4 +71,4 @@ const remove = async (req, res) => {
   }
 };
 
-export default { index, create, read, update, remove };
+export default { index, create, read, update, remove, uploadImage };

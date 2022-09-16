@@ -2,6 +2,7 @@ import {
     CardHeader, CardContent, Card,
     Typography, Box, Button,
     Divider,
+    CardMedia
 } from '@mui/material';
 import { Link } from "react-router-dom"
 import { useState } from 'react';
@@ -9,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from 'react';
 
 import { Done } from '@mui/icons-material/';
-
+import Config from '../../config/services';
 const styles = {
     root: {
         borderRadius: 5,
@@ -33,7 +34,7 @@ const styles = {
 
 
 const CardProduto = ({ produto, addCart }) => {
-    const { id, nome, descricao, preco } = produto;
+    const { id, nome, descricao, preco, imageUrl } = produto;
     const [total, setTotal] = useState(0)
     const [isAdd, setIsAdd] = useState(false)
 
@@ -41,18 +42,13 @@ const CardProduto = ({ produto, addCart }) => {
         return state?.shopingCart.cart
     });
 
-    const a = useSelector((state) => {
-        return state;
-    });
-
 
     useEffect(() => {
-        console.log(a);
         const finded = cart.find(item => item.id === produto.id)
         if (finded) {
             setIsAdd(true)
         }
-    }, [produto?.id, cart])
+    }, [produto.id, cart])
 
     const contador = () => {
         return (
@@ -114,9 +110,11 @@ const CardProduto = ({ produto, addCart }) => {
     }
 
     return (
-        <Card sx={styles.root} >
+        <Card sx={styles.root} variant="outlined" >
             <CardContent>
+
                 <CardHeader title={nome} sx={styles.header} />
+                <CardMedia component="img" image={`${Config.baseUrl}/files/${imageUrl}`} />
                 <Divider variant="middle" />
                 <CardContent>
                     <Typography variant="h4" align="center" sx={{ fontWeight: "bold" }}>

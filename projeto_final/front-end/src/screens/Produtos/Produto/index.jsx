@@ -12,8 +12,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Delete, Edit, AddShoppingCart } from '@mui/icons-material'
 import Contador from "../../../components/Contador";
 import DialogDelete from "../../../components/DialogDelete";
-import { addProductToCart } from "../../../redux/actions/cartActions";
 import { Done } from '@mui/icons-material/';
+import { addProductToCart } from "../../../redux/slices/cartSlices";
+
 
 
 const Produto = () => {

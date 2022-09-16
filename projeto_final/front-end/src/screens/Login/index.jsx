@@ -37,7 +37,6 @@ const Login = () => {
         try {
             const response = await Api.login({ email, senha: password });
 
-            console.log(response.usuario);
             if (response.status === 401) {
                 setError(true)
                 setErrorMessage(response.message)
@@ -47,7 +46,6 @@ const Login = () => {
 
             navigate(`/`)
         } catch (error) {
-            console.log(error);
             setError(true)
         } finally {
             setLoadinng(false)

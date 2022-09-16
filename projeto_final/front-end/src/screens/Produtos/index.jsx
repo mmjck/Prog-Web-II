@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { addProductToCart } from "../../redux/slices/cartSlices";
 
+
 const Products = () => {
     const [produtos, setProdutos] = useState([]);
     const [searchString, setSearchString] = useState("");
@@ -52,7 +53,6 @@ const Products = () => {
 
     useEffect(() => {
         getProducts();
-
     }, [getProducts]);
 
     useEffect(() => {

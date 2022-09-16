@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, } from "react"
 import { useNavigate } from "react-router-dom"
 import Api from "../../../services/api";
 import {
@@ -18,16 +18,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { Add, SentimentDissatisfied, House } from '@mui/icons-material'
 import AddressFormDialog from "../../../components/AddressForm";
-
+import { updateUser } from "../../../redux/slices/userSlices";
 const AddressCart = () => {
-
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
 
     const [selected, setSelected] = useState(null);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    const [selectAddress, setSelectAddress] = useState(false);
 
     const shopingCart = useSelector((state) => {
         return state?.shopingCart
@@ -44,7 +46,6 @@ const AddressCart = () => {
 
 
 
-    const navigate = useNavigate();
 
     const theme = createTheme();
 
@@ -72,7 +73,7 @@ const AddressCart = () => {
 
             const newUserData = { ...userData.user, enderecos: [...userData.user.enderecos, response.address] }
             console.log("response", newUserData);
-
+            dispatch(updateUser(newUserData))
             handleClose()
         } catch (error) {
             console.log(error);
@@ -88,39 +89,37 @@ const AddressCart = () => {
 
 
     const handleSubmit = async () => {
-        console.log(shopingCart);
-        const { address, cart } = shopingCart
+        const { cart } = shopingCart
 
         setError(false)
 
         if (selected == null) {
+            setSelectAddress(true)
             return
         }
-        console.log(selected);
+        setSelectAddress(false)
+
         const data = {
             products: [...cart],
             date_order: new Date(),
-            address,
-
+            enderecoId: selected.id,
         }
-        // try {
-        //     await Api.createOrder(userData.user.id, data)
-        //     navigate("/")
-        // } catch (error) {
 
-        //     if (error.statusCode) {
-        //         console.log(error);
-        //         setError(true)
-        //         setErrorMessage("Tente novamente")
-        //     }
-        // } finally {
-        //     setLoading(false)
-        // }
-
+        try {
+            await Api.createOrder(userData.user.id, data)
+            navigate("/")
+        } catch (error) {
+            if (error.statusCode) {
+                console.log(error);
+                setError(true)
+                setErrorMessage("Tente novamente")
+            }
+        } finally {
+            setLoading(false)
+        }
     }
 
     const listAddress = () => {
-
         return <List sx={{ width: '100%', }}>
             {
                 userData.user.enderecos?.map((element, index) => {
@@ -228,6 +227,10 @@ const AddressCart = () => {
             <Typography variant="h5" >Selecione um endereço para entrega</Typography>
             <Divider sx={{ borderBottomWidth: 5 }} />
             {listAddress()}
+
+            {selectAddress && <Alert severity="warning">Selecione um endereço</Alert>}
+
+
             <Box
                 sx={{ flexDirection: "row", display: "flex" }}>
                 <Divider sx={{ borderWidth: 5 }} orientation="vertical" flexItem />

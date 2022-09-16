@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs';
-import { Usuario, Endereco, Compra } from '../models';
+import { Usuario, Endereco } from '../models';
 
 const login = async (req, res) => {
   try {
@@ -18,12 +18,6 @@ const login = async (req, res) => {
           where: {
             usuarioId: usuario.id,
           },
-          // include: [
-          //   {
-          //     model: Compra,
-          //     required: false,
-          //   },
-          // ],
         });
 
         return res.send({
@@ -31,16 +25,16 @@ const login = async (req, res) => {
             nome: usuario.nome,
             email: usuario.email,
             id: usuario.id,
+            tipoUsuarioId: usuario.tipoUsuarioId,
             enderecos,
-
-            // tipoUsuarioId: usuario.tipoUsuarioId,
           },
           message: 'Usuario autenticado',
         });
-      } else res.status(401).send({ message: 'Email e/ou senha incorreta' });
+      } else
+        return res.status(401).send({ message: 'Email e/ou senha incorreta' });
     }
 
-    res.send({
+    res.status(401).send({
       message: 'Usuário não encontrado',
       usuario: null,
     });

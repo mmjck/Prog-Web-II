@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     cart: [],
     totalValue: 0,
-    // address: null
 }
 
 
@@ -12,8 +11,19 @@ const updateTotal = (arr) => {
         console.log(acc, obj);
         return acc + obj.quantity * parseFloat(obj.preco)
     }, 0);
-
     return result
+}
+
+const atualizaCarrinho = (state, finded, total) => {
+    return state.cart.map(item => {
+        if (item.id === finded.id) {
+            return {
+                ...item,
+                quantity: total
+            }
+        }
+        return item
+    });
 }
 
 const shopingCartSlice = createSlice({
@@ -25,18 +35,7 @@ const shopingCartSlice = createSlice({
             const finded = state.cart.find(item => item.id === produto.id)
 
             if (finded) {
-                const cart = state.cart.map(item => {
-                    if (item.id === finded.id) {
-                        return {
-                            ...item,
-                            quantity: total
-                        }
-                    }
-
-                    return item
-                });
-
-                
+                const cart = atualizaCarrinho();
                 return {
                     ...state,
                     cart: cart,
@@ -45,19 +44,13 @@ const shopingCartSlice = createSlice({
             }
 
             const cart = [...state.cart, {...produto, quantity: total}]
-
-
-            console.log("LOG", cart);
             return {
                 ...state,
                 totalValue: updateTotal(cart),
-                cart: [
-                    ...cart,  
-                ]
+                cart: [ ...cart]
             };
         },
         removeProductFromCart: (state, action) => {
-            // const {produto, total} = action.payload;
             const newCart = state.cart.filter(element => element.id !== action.product.id)
             return {
                 ...state,
@@ -65,18 +58,10 @@ const shopingCartSlice = createSlice({
                 totalValue: updateTotal(state)
             }
         },
-        // addAddress: (state, action) => {
-        //     return {
-        //         ...state,
-        //         cart: null,
-        //         totalValue: 0,
-        //         address: { ...action.address }
-        //       }
-        // },
         clearCart: (state) => initialState
 
     }
 })
 
-export const { clearCart, removeProductFromCart, addProductToCart} = shopingCartSlice.actions
+export const { clearCart, removeProductFromCart, addProductToCart } = shopingCartSlice.actions
 export default shopingCartSlice.reducer;
