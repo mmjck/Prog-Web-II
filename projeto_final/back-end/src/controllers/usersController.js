@@ -158,20 +158,24 @@ const update = async (req, res) => {
 const listAllCollaborators = async (req, res) => {
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const size = req.query.size ? parseInt(req.query.size) : 10;
-  const chefe = req.params.id;
+  const id = req.params.id;
   try {
-    const produtos = await Usuario.findAll({
+    const usuario = await Usuario.findOne({ where: { id } });
+
+    if (usuario.tipoUsuarioId == 1) return res.status(500);
+
+    const colaboratores = await Usuario.findAll({
       limit: size,
       offset: (page - 1) * size,
       where: {
         tipoUsuarioId: 2,
         id: {
-          [Op.ne]: chefe,
+          [Op.ne]: usuario.id,
         },
       },
       attributes: { exclude: ['senha'] },
     });
-    res.json(produtos);
+    res.json(colaboratores);
   } catch (error) {
     res.status(500).json(error);
   }

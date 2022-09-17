@@ -19,6 +19,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Add, SentimentDissatisfied, House } from '@mui/icons-material'
 import AddressFormDialog from "../../../components/AddressForm";
 import { updateUser } from "../../../redux/slices/userSlices";
+import { clearCart } from "../../../redux/slices/cartSlices";
+
+
+
+
 const AddressCart = () => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -107,6 +112,7 @@ const AddressCart = () => {
 
         try {
             await Api.createOrder(userData.user.id, data)
+            dispatch(clearCart());
             navigate("/")
         } catch (error) {
             if (error.statusCode) {

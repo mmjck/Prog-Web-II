@@ -14,7 +14,7 @@ import Contador from "../../../components/Contador";
 import DialogDelete from "../../../components/DialogDelete";
 import { Done } from '@mui/icons-material/';
 import { addProductToCart } from "../../../redux/slices/cartSlices";
-
+import Config from "../../../config/services";
 
 
 const Produto = () => {
@@ -103,7 +103,6 @@ const Produto = () => {
         navigate(`/produto/${id}/edit`)
     }
     const handleDelete = async () => {
-        console.log(id);
         try {
             await Api.deleteProdut(id)
             handleClose()
@@ -120,7 +119,18 @@ const Produto = () => {
                     <LinearProgress />
                 </Box>
             )}
-            {userData.user.tipoUsuarioId === 2 && (
+            <Box
+                component="img"
+                sx={{
+                    height: 233,
+                    width: 350,
+                    maxHeight: { xs: 233, md: 167 },
+                    maxWidth: { xs: 350, md: 250 },
+                }}
+                alt="The house from the offer."
+                src={`${Config.baseUrl}/files/${produto?.imageUrl}`}
+            />
+            {userData?.user?.tipoUsuarioId === 2 && (
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
@@ -168,7 +178,7 @@ const Produto = () => {
 
 
                 </Box>
-                <Divider orientation="vertical" />
+                <Divider orientation="vertical" fullH />
                 <Box sx={{
                     display: 'flex',
                     flexDirection: "column",

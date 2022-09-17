@@ -5,14 +5,15 @@ import { useNavigate } from "react-router-dom"
 import {
     AppBar,
     Toolbar,
-    Typography,
     Button, IconButton, Container, Box,
 } from "@mui/material";
 import ImageIcon from '@mui/icons-material/AccountCircle';
 import AdbIcon from '@mui/icons-material/Adb';
 import { logout } from '../../redux/slices/userSlices'
 
+import { clearCart } from '../../redux/slices/cartSlices'
 
+import Api from "../../services/api";
 const Header = () => {
     const [logged, setLogged] = useState(false)
 
@@ -26,13 +27,22 @@ const Header = () => {
             setLogged(UserData.isLogged)
 
         }
+
+        console.log(UserData);
     }, [UserData])
 
 
     const handleLogout = async () => {
-        console.log('carai bou');
-        dispatch(logout())
-        navigate("/")
+        try {
+            await Api.logout(UserData.user.id)
+            dispatch(logout())
+            dispatch(clearCart())
+            navigate("/")
+
+        } catch (e) {
+
+        }
+
     }
 
     return (
@@ -40,22 +50,15 @@ const Header = () => {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <Button
+                        onClick={() => {
+                            navigate("/")
 
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            fontWeight: 700,
-                            color: 'inherit',
-                            textDecoration: 'none',
                         }}
+                        sx={{ my: 2, color: 'white', display: 'block' }}
                     >
-                        Minha loja
-                    </Typography>
-
+                        Loja
+                    </Button>
 
                     <Box sx={{ display: "flex", flexDirection: "row" }}>
                         <Button

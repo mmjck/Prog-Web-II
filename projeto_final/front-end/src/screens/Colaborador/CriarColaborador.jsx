@@ -1,17 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import LinearProgress from '@mui/material/LinearProgress';
 import React from 'react';
 import Api from "../../services/api";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 import {
-    InputAdornment,
-    Input,
-    Typography, Box, Button, TextField, IconButton, FormControl,
-    OutlinedInput,
-    InputLabel
+    Typography, Box, Button, TextField
 
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -20,18 +13,18 @@ import * as yup from 'yup';
 
 const validationSchema = yup.object({
     nome: yup
-        .string('Insira seu nome')
-        .required('Nome is required'),
+        .string()
+        .required('Insira seu nome'),
     email: yup
-        .string('Insira seu email')
-        .email('Enter a valid email')
-        .required('Email is required'),
+        .string()
+        .email()
+        .required("Insira seu email"),
     confirmPassowrd: yup.string()
-        .oneOf([yup.ref('password'), null], 'Passwords must match'),
+        .oneOf([yup.ref('password'), null], 'Senhas devem ser iguais'),
     password: yup
-        .string('Enter your password')
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
+        .string('')
+        .min(8, 'Senha deve ter no mínimo 8 caracteres')
+        .required('Insira sua senha'),
 });
 
 
@@ -39,16 +32,7 @@ const AdicionarColaborador = () => {
     const [loading, setLoadinng] = useState(false)
 
 
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const navigate = useNavigate();
-
-
-
-
-
-
 
     const handleSubmit = async (values) => {
         try {
@@ -104,7 +88,7 @@ const AdicionarColaborador = () => {
                         value={formik.nome}
                         onChange={formik.handleChange}
                         fullWidth
-                        name="password"
+                        name="nome"
                         label="Nome completo"
                         type="text"
                         id="nome"
@@ -133,25 +117,13 @@ const AdicionarColaborador = () => {
                         label="Senha"
                         fullWidth
 
-                        // endAdornment={
-                        //     <InputAdornment position="end">
-                        //         <IconButton
-                        //             aria-label="toggle password visibility"
-                        //             onClick={handleClickShowPassword}
-                        //             onMouseDown={handleMouseDownPassword}
-                        //         >
-                        //             {showPassword ? <VisibilityOff /> : <Visibility />}
-                        //         </IconButton>
-                        //     </InputAdornment>
-                        // }
+
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
-                        type={showPassword ? "text" : "password"}
                     />
                     <TextField
                         margin="normal"
                         fullWidth
-
                         value={formik.confirPassword}
                         onChange={formik.handleChange}
                         name="confirPassword"

@@ -16,7 +16,7 @@ const index = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log('body', req.body);
     const produto = await Produto.create(req.body);
     res.send(produto);
   } catch (error) {

@@ -9,8 +9,8 @@ const Api = {
     },
 
 
-    async logout(data) {
-        const response = await client.post("/logout", data)
+    async logout(id) {
+        const response = await client.delete(`/logout/${id}`)
         return response.data;
     },
 

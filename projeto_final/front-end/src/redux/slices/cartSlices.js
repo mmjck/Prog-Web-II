@@ -6,7 +6,7 @@ const initialState = {
 }
 
 
-const updateTotal = (arr) => {
+const atualizaValorTotal = (arr) => {
     var result = arr.reduce((acc, obj) => {
         console.log(acc, obj);
         return acc + obj.quantity * parseFloat(obj.preco)
@@ -39,14 +39,14 @@ const shopingCartSlice = createSlice({
                 return {
                     ...state,
                     cart: cart,
-                    totalValue: updateTotal(cart)
+                    totalValue: atualizaValorTotal(cart)
                 }
             }
 
             const cart = [...state.cart, {...produto, quantity: total}]
             return {
                 ...state,
-                totalValue: updateTotal(cart),
+                totalValue: atualizaValorTotal(cart),
                 cart: [ ...cart]
             };
         },
@@ -55,7 +55,33 @@ const shopingCartSlice = createSlice({
             return {
                 ...state,
                 cart: newCart,
-                totalValue: updateTotal(state)
+                totalValue: atualizaValorTotal(state)
+            }
+        },
+
+        incrementQuantity: (state, action) => {
+            const arr = [...state.cart];
+            const findIndex = arr.findIndex(item => item.id === action.id)
+            arr[findIndex].quantity +=1;
+            return {
+                ...state,
+                cart: [...arr],
+                totalValue: atualizaValorTotal(state)
+            }
+        },
+        decrementQuantity: (state, action) => {
+            const arr = [...state.cart];
+            const findIndex = arr.findIndex(item => item.id === action.id)
+
+            if(arr[findIndex].quantity >= 1){
+                arr[findIndex].quantity -= 1;
+            }else {
+                arr[findIndex].quantity = 0;
+            }
+            return {
+                ...state,
+                cart: [...arr],
+                totalValue: atualizaValorTotal(state)
             }
         },
         clearCart: (state) => initialState

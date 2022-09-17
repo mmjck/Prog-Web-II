@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import React from 'react';
 import Api from "../../services/api";
+import { useSelector } from "react-redux";
 
 import {
     LinearProgress,
@@ -26,13 +27,15 @@ const Colaboradores = () => {
     const [listCollaborators, setListCollaborators] = useState([]);
     const [open, setOpen] = useState(false);
     const [id, setId] = useState(null);
+    const theme = createTheme();
 
     const navigate = useNavigate();
+    const UserData = useSelector((state) => state.user);
 
     const getCollaborators = useCallback(async () => {
         setLoading(true)
         try {
-            const response = await Api.getCollaboratos(37)
+            const response = await Api.getCollaboratos(UserData?.user?.id);
             console.log(response);
             setListCollaborators(response)
             setLoading(true)
@@ -48,7 +51,6 @@ const Colaboradores = () => {
         getCollaborators()
     }, [getCollaborators])
 
-    const theme = createTheme();
 
 
     const handleClickOpen = () => {
@@ -66,7 +68,6 @@ const Colaboradores = () => {
             setListCollaborators(listCollaborators.filter(element => element.id !== id))
             setId(null)
             handleClose()
-
         } catch (error) {
 
         }
@@ -88,10 +89,6 @@ const Colaboradores = () => {
                                     disableElevation
                                     aria-label="Disabled elevation buttons"
                                 >
-                                    <Button>
-                                        <EditIcon />
-
-                                    </Button>
                                     <Button onClick={() => {
                                         setId(element.id);
                                         handleClickOpen();

@@ -5,7 +5,7 @@ import Api from "../../../services/api";
 
 import {
     Typography, Box, Button, TextField,
-    LinearProgress, Paper
+    LinearProgress, Input
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useFormik } from 'formik';
@@ -31,7 +31,8 @@ const EditarProduto = () => {
     const [estoque, setEstoque] = useState(10)
     const [loading, setLoading] = useState(false)
     const [product, setProduct] = useState(null)
-
+    const [image, setImage] = useState(null)
+    const [hasImage, setHasImage] = useState(false);
 
 
     const navigate = useNavigate();
@@ -75,6 +76,17 @@ const EditarProduto = () => {
         }
     }
 
+
+    const handleFileChange = (e) => {
+        const img = {
+            preview: URL.createObjectURL(e.target.files[0]),
+            data: e.target.files[0],
+        }
+        setImage(img)
+        setHasImage(true)
+    }
+
+
     const formik = useFormik({
         enableReinitialize: true,
 
@@ -85,8 +97,6 @@ const EditarProduto = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values, event) => {
-            console.log(event);
-            // e.preventDefault()
             handleSubmit(values)
 
         },
@@ -140,6 +150,28 @@ const EditarProduto = () => {
                     name="preco"
                     type="number"
                 />
+                <Input
+                    id="file"
+                    name="file"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
+
+                {hasImage && (
+                    <Box
+                        component="img"
+                        sx={{
+                            height: 233,
+                            width: 350,
+                            maxHeight: { xs: 233, md: 167 },
+                            maxWidth: { xs: 350, md: 250 },
+                        }}
+                        alt="The house from the offer."
+                        src={image?.preview}
+                    />
+                )}
+
                 <Contador value={estoque} increment={() => {
                     setEstoque(estoque + 1)
                 }}

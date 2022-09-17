@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Api from "../../../services/api";
 import {
     Typography, Box, Button, TextField,
-    LinearProgress, Input,
+    LinearProgress, Input, Alert
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useFormik } from 'formik';
@@ -19,8 +19,7 @@ const validationSchema = yup.object({
         .required("Insira uma descrição"),
     preco: yup
         .number()
-        .required('Preço is required'),
-    // file: yup.mixed().required(),
+        .required('Insira o preço'),
 });
 
 const CriarProdutoForm = () => {
@@ -28,31 +27,37 @@ const CriarProdutoForm = () => {
     const [estoque, setEstoque] = useState(1)
     const [loading, setLoadinng] = useState(false)
     const [image, setImage] = useState(null)
+    const [hasImage, setHasImage] = useState(false);
 
 
+    const [noImage, setNoImage] = useState(false);
 
+    console.log(image);
     const navigate = useNavigate();
     const theme = createTheme();
 
     const handleSubmit = async (e) => {
         const produto = { ...e, estoque }
-        console.log("e, ", e.file, image);
+        console.log("e, ", image);
+
+        if (image == null) {
+            setHasImage(false)
+            setNoImage(true)
+
+            return;
+        }
+
+        setNoImage(false)
         setLoadinng(true)
         const formData = new FormData()
-        formData.append('file', image.data)
-
-        console.log("formdata", formData);
         try {
             const { path } = await Api.uploadImage(formData)
 
             console.log(path);
-            // const response = await Api.createProdut({ ...produto, path });
+            const response = await Api.createProdut({ ...produto, path });
 
-            // navigate(`/produto/${response.id}`)
-            // console.log(response);
+            navigate(`/produto/${response.id}`)
         } catch (error) {
-            console.log(error);
-
         }
         finally {
             setLoadinng(false)
@@ -60,12 +65,12 @@ const CriarProdutoForm = () => {
     }
 
     const handleFileChange = (e) => {
-        console.log(e.target.files);
         const img = {
             preview: URL.createObjectURL(e.target.files[0]),
             data: e.target.files[0],
         }
         setImage(img)
+        setHasImage(true)
     }
 
     const formik = useFormik({
@@ -73,6 +78,7 @@ const CriarProdutoForm = () => {
             nome: "",
             descricao: '',
             preco: 0,
+
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -91,7 +97,7 @@ const CriarProdutoForm = () => {
             <Typography component="h3">
                 Adição de produto
             </Typography>
-            <Box component="form" onSubmit={formik.handleSubmit}>
+            <Box sx={{ width: '400px' }} component="form" onSubmit={formik.handleSubmit}>
                 <TextField
                     margin="normal"
                     fullWidth
@@ -128,7 +134,8 @@ const CriarProdutoForm = () => {
                     name="preco"
                     type="number"
                 />
-
+                <br /><br />
+                {noImage && (<Alert severity="warning">Selecione uma imagem</Alert>)}
 
                 <Input
                     id="file"
@@ -137,6 +144,22 @@ const CriarProdutoForm = () => {
                     accept="image/*"
                     onChange={handleFileChange}
                 />
+
+                {hasImage && (
+                    <Box
+                        component="img"
+                        sx={{
+                            height: 233,
+                            width: 350,
+                            maxHeight: { xs: 233, md: 167 },
+                            maxWidth: { xs: 350, md: 250 },
+                        }}
+                        alt="The house from the offer."
+                        src={image?.preview}
+                    />
+                )}
+
+
 
 
                 <Contador value={estoque} increment={() => {

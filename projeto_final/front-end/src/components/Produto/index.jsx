@@ -35,13 +35,12 @@ const styles = {
 
 const CardProduto = ({ produto, addCart }) => {
     const { id, nome, descricao, preco, imageUrl } = produto;
-    const [total, setTotal] = useState(0)
+    const [total, setTotal] = useState(1)
     const [isAdd, setIsAdd] = useState(false)
 
     const cart = useSelector((state) => {
         return state?.shopingCart.cart
     });
-
 
     useEffect(() => {
         const finded = cart.find(item => item.id === produto.id)

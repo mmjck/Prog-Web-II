@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import {
@@ -7,21 +7,22 @@ import {
     List,
     ListItem,
     Button,
-    Paper, Divider
+    Paper, Divider, ListItemAvatar, Avatar
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
-import { Delete, Add, SentimentDissatisfied } from '@mui/icons-material'
-import AddressFormDialog from "../../../components/AddressForm";
+import { Delete, SentimentDissatisfied } from '@mui/icons-material'
+import Config from "../../../config/services";
+import { clearCart } from "../../../redux/slices/cartSlices";
+import DialogDelete from "../../../components/DialogDelete";
+
+
 
 
 const Carrinho = () => {
-
     const [open, setOpen] = useState(false);
-    const [data, setData] = useState(null);
-
-
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const theme = createTheme();
 
 
@@ -37,7 +38,12 @@ const Carrinho = () => {
 
 
 
-    const updateCart = (produto) => {
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handleOpen = () => {
+        setOpen(true)
 
     }
 
@@ -45,7 +51,6 @@ const Carrinho = () => {
         return (
             <List sx={{ bgcolor: 'background.paper' }}>
                 {shopingCart.cart.map((element, index) => {
-                    console.log(element);
                     return (
                         <ListItem alignItems="flex-start" key={element.id.toString()}>
                             <Paper sx={{
@@ -55,6 +60,9 @@ const Carrinho = () => {
                                 justifyContent: "space-between",
                                 width: 700,
                             }}>
+                                <ListItemAvatar>
+                                    <Avatar alt="Remy Sharp" src={`${Config.baseUrl}/files/${element?.imageUrl}`} />
+                                </ListItemAvatar>
                                 <Box sx={{
                                     width: 400,
                                 }}>
@@ -70,7 +78,9 @@ const Carrinho = () => {
                                     justifyContent: "space-between"
                                 }}>
 
-                                    <Button variant="contained" color="error">
+                                    <Button variant="contained" color="error" onClick={() => {
+
+                                    }}>
                                         -
                                     </Button >
                                     <Typography sx={{ px: 1 }}> {element.quantity}</Typography>
@@ -97,6 +107,10 @@ const Carrinho = () => {
     }
 
 
+    const handleClean = () => {
+        dispatch(clearCart());
+    }
+
     const emptyCart = () => {
         return (
             <Box sx={{
@@ -113,16 +127,11 @@ const Carrinho = () => {
     }
 
     const handleSubmit = () => {
-        console.log("entroiu");
-
-        console.log(userData);
         if (userData) {
             if (userData.isLogged === false) {
                 return navigate("/login")
             }
-
-
-            return navigate("/cart/address", { f: {} })
+            return navigate("/cart/address")
         }
     }
 
@@ -133,7 +142,6 @@ const Carrinho = () => {
                 theme={theme}>
                 {emptyCart()}
             </ThemeProvider>
-
         )
     }
 
@@ -148,7 +156,7 @@ const Carrinho = () => {
 
 
             <Box>
-                <Button color="error" sx={{ display: "flex", alignSelf: "flex-end" }}>
+                <Button color="error" sx={{ display: "flex", alignSelf: "flex-end" }} onClick={handleOpen}>
                     <Box sx={{ flexDirection: "row", display: "flex" }}>
                         <Typography variant="p" >Limpar carrinho</Typography>
                         <Delete />
@@ -159,9 +167,7 @@ const Carrinho = () => {
 
 
 
-            <Box
-                sx={{ flexDirection: "row", display: "flex" }}>
-
+            <Box sx={{ flexDirection: "row", display: "flex" }}>
                 {listProductsCart()}
 
                 <Divider sx={{ borderWidth: 5 }} orientation="vertical" flexItem />
@@ -182,43 +188,16 @@ const Carrinho = () => {
                     </Button >
                 </Box>
             </Box>
-
-
-
             <Divider sx={{ borderBottomWidth: 5 }} />
 
-            {/* <Box
-                sx={{ flexDirection: "row", display: "flex" }}>
-                <Box sx={{ p: 1 }}>
-                    <Typography variant="p" > Enviar para: </Typography>
-
-                    <Box sx={{ p: 1 }}>
-                        {shopingCart?.address != null ? (
-                            dataAddress()
-                        ) : (
-                            <Button color="success" sx={{ display: "flex", alignSelf: "flex-end" }}
-                                onClick={() => handleClickOpen()}>
-                                <Box sx={{ flexDirection: "row", display: "flex" }}>
-                                    <Typography variant="p" >Adicionar Endereço</Typography>
-                                    <Add />
-                                </Box>
-
-                            </Button >
-                        )}
-                    </Box>
-                </Box>
-            </Box> */}
-            {/* <AddressFormDialog
+            <DialogDelete
                 isOpen={open}
                 onClose={handleClose}
-                title="Adicionar endereço"
-                message="Insira os dados para adicionar um novo endereço"
-                data={data}
-                onConfirm={() => { }}
-            /> */}
-
-
-        </ThemeProvider>
+                onConfirm={handleClean}
+                title={"Deseja limpar o carrinho?"}
+                message={"Ao confirmar, não será possível reverter essa ação"}
+            />
+        </ThemeProvider >
     )
 }
 export default Carrinho
