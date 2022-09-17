@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { current } from '@reduxjs/toolkit'
 
 const initialState = {
     cart: [],
@@ -60,28 +61,50 @@ const shopingCartSlice = createSlice({
         },
 
         incrementQuantity: (state, action) => {
-            const arr = [...state.cart];
-            const findIndex = arr.findIndex(item => item.id === action.id)
-            arr[findIndex].quantity +=1;
+            const arr = current(state).cart;
+            const findIndex = arr.findIndex(item => item.id === action.payload)
+
+            const value = arr[findIndex]
+            const q = value.quantity + 1 
+
+            const newArr = arr.map(item => {
+                if(item.id === action.payload )  {
+                return { 
+                ...value, quantity: q}
+                }
+                    return item;
+            });
+
             return {
-                ...state,
-                cart: [...arr],
-                totalValue: atualizaValorTotal(state)
+                ...current(state),
+                cart: [...newArr],
+                totalValue: atualizaValorTotal(newArr)
             }
         },
         decrementQuantity: (state, action) => {
-            const arr = [...state.cart];
-            const findIndex = arr.findIndex(item => item.id === action.id)
+            const arr = current(state).cart;
+            const findIndex = arr.findIndex(item => item.id === action.payload)
+           
+            const value = arr[findIndex]
+            let q =0;
+
 
             if(arr[findIndex].quantity >= 1){
-                arr[findIndex].quantity -= 1;
+                q =  value.quantity - 1
             }else {
-                arr[findIndex].quantity = 0;
+                q =  0
             }
+            const newArr = arr.map(item => {
+                if(item.id === action.payload )  {
+                return { 
+                ...value, quantity: q}
+                }
+                    return item;
+            });
             return {
-                ...state,
-                cart: [...arr],
-                totalValue: atualizaValorTotal(state)
+                ...current(state),
+                cart: [...newArr],
+                totalValue: atualizaValorTotal(newArr)
             }
         },
         clearCart: (state) => initialState
@@ -89,5 +112,5 @@ const shopingCartSlice = createSlice({
     }
 })
 
-export const { clearCart, removeProductFromCart, addProductToCart } = shopingCartSlice.actions
+export const { clearCart, removeProductFromCart, addProductToCart, incrementQuantity, decrementQuantity } = shopingCartSlice.actions
 export default shopingCartSlice.reducer;

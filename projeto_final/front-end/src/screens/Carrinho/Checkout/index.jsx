@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import {
@@ -6,14 +6,14 @@ import {
     Box,
     List,
     ListItem,
-    Button,
+    Button, Alert,
     Paper, Divider, ListItemAvatar, Avatar
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, SentimentDissatisfied } from '@mui/icons-material'
 import Config from "../../../config/services";
-import { clearCart } from "../../../redux/slices/cartSlices";
+import { clearCart, incrementQuantity, decrementQuantity } from "../../../redux/slices/cartSlices";
 import DialogDelete from "../../../components/DialogDelete";
 
 
@@ -21,6 +21,8 @@ import DialogDelete from "../../../components/DialogDelete";
 
 const Carrinho = () => {
     const [open, setOpen] = useState(false);
+    const [empty, setEmpty] = useState(false);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const theme = createTheme();
@@ -79,13 +81,15 @@ const Carrinho = () => {
                                 }}>
 
                                     <Button variant="contained" color="error" onClick={() => {
-
+                                        dispatch(decrementQuantity(element?.id))
                                     }}>
                                         -
                                     </Button >
                                     <Typography sx={{ px: 1 }}> {element.quantity}</Typography>
 
-                                    <Button variant="contained" color="success">
+                                    <Button variant="contained" color="success" onClick={() => {
+                                        dispatch(incrementQuantity(element?.id))
+                                    }}>
                                         +
                                     </Button>
 
@@ -127,6 +131,18 @@ const Carrinho = () => {
     }
 
     const handleSubmit = () => {
+        if (shopingCart.totalValue === 0) {
+            setEmpty(true)
+            return;
+        }
+
+        console.log(shopingCart.cart.find(item => item.quantity === 0));
+        if (shopingCart.cart.find(item => item.quantity === 0)) {
+            setEmpty(true)
+            return;
+        }
+
+        setEmpty(false)
         if (userData) {
             if (userData.isLogged === false) {
                 return navigate("/login")
@@ -189,6 +205,7 @@ const Carrinho = () => {
                 </Box>
             </Box>
             <Divider sx={{ borderBottomWidth: 5 }} />
+            {empty && (<Alert severity="warning">A quantidade dos produtos deve ser maior que 0</Alert>)}
 
             <DialogDelete
                 isOpen={open}
